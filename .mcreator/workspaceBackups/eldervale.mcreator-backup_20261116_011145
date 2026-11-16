@@ -816,6 +816,25 @@
         ]
       },
       "path": "~/classes/monk/skill"
+    },
+    {
+      "name": "Monkskill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "monkskill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/Monkskill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/monk/skill"
     }
   ],
   "variable_elements": [
