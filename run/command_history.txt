@@ -1,0 +1,50 @@
+/summon eldervale:manichino_ranger
+/summon minecraft:husk
+/summon eldervale:manichino_ranger
+/gamemode survival
+/kill @e
+/time set day
+/summon eldervale:magic_arrow
+/tick freeze
+/summon eldervale:magic_arrow
+/give Dev bow[
+/give Dev bow
+/give Dev minecraft:breeze_rod
+/give Dev eldervale:classselector
+/tick unfreeze
+/tick freeze
+/gamemode creative
+/give Dev eldervale:classselector
+/gamemode survival
+/tick unfreeze
+/summon minecraft:husk
+/gamemode creative
+/give Dev eldervale:classselector
+/summon minecraft:husk
+/summon minecraft:allay
+/summon minecraft:zoglin
+/gamemode survival
+/gamemode creative
+/time set day
+/give @a eldervale:classselector
+/effect give @a minecraft:regeneration
+/effect give @a minecraft:regeneration 5 100
+/summon minecraft:husk
+/give @a eldervale:classselector
+/gamemode survival
+/summon minecraft:husk
+/gamemode creative
+/give @a eldervale:classselector
+/summon minecraft:zombie
+/gamemode survival
+/summon minecraft:zoglin
+/time set day
+/kill @e
+/gamemode creative
+/place template ldlib2:empty
+/fill ~ ~ ~ ~ ~ ~ minecraft:cobbled_deepslate
+/fill -8 -28 13
+/fill -8 -28 13 ~ ~ ~ minecraft:cobbled_deepslate
+/summon minecraft:husk
+/gamerule keepInventory true
+/summon minecraft:husk

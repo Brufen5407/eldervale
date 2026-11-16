@@ -1,0 +1,31 @@
+{
+  "workspacePanelIconSize": "TILES",
+  "workspacePanelSortType": "NAME",
+  "workspacePanelSortAscending": true,
+  "projectBrowserState": {
+    "expandedPaths": [
+      "[, ELDERVALE]",
+      "[, ELDERVALE, Resources (Gradle)]",
+      "[, ELDERVALE, Resources (Gradle), C:\\Users\\elett\\MCreatorWorkspaces\\eldervale\\src\\main\\resources\\assets]",
+      "[, ELDERVALE, Resources (Gradle), C:\\Users\\elett\\MCreatorWorkspaces\\eldervale\\src\\main\\resources\\assets, C:\\Users\\elett\\MCreatorWorkspaces\\eldervale\\src\\main\\resources\\assets\\eldervale]",
+      "[, ELDERVALE, Resources (Gradle), C:\\Users\\elett\\MCreatorWorkspaces\\eldervale\\src\\main\\resources\\assets, C:\\Users\\elett\\MCreatorWorkspaces\\eldervale\\src\\main\\resources\\assets\\eldervale, C:\\Users\\elett\\MCreatorWorkspaces\\eldervale\\src\\main\\resources\\assets\\eldervale\\models]",
+      "[, ELDERVALE, Resources (Gradle), C:\\Users\\elett\\MCreatorWorkspaces\\eldervale\\src\\main\\resources\\assets, C:\\Users\\elett\\MCreatorWorkspaces\\eldervale\\src\\main\\resources\\assets\\eldervale, C:\\Users\\elett\\MCreatorWorkspaces\\eldervale\\src\\main\\resources\\assets\\eldervale\\models, C:\\Users\\elett\\MCreatorWorkspaces\\eldervale\\src\\main\\resources\\assets\\eldervale\\models\\custom]"
+    ]
+  },
+  "leftDockState": {
+    "dockSizes": {
+      "project_browser": 280,
+      "local_history": 280
+    }
+  },
+  "rightDockState": {
+    "dockSizes": {}
+  },
+  "bottomDockState": {
+    "dockSizes": {
+      "console": 713,
+      "code_viewer": 43,
+      "debugger": 300
+    }
+  }
+}

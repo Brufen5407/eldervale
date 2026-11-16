@@ -1,0 +1,10 @@
+{
+  "_fv": 89,
+  "_type": "keybind",
+  "definition": {
+    "triggerKey": "B",
+    "keyBindingName": "Skill 2",
+    "keyBindingCategoryKey": "gameplay",
+    "onKeyPressed": "Skill2class"
+  }
+}

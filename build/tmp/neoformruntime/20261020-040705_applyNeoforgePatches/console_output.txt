@@ -1,0 +1,29 @@
+--------------------------------------------------------------------------------
+
+Command-Line:
+ - C:\Users\elett\.mcreator\gradle\jdks\eclipse_adoptium-21-amd64-windows.2\bin\java.exe
+ - -jar
+ - C:\Users\elett\.mcreator\gradle\caches\modules-2\files-2.1\io.codechicken\DiffPatch\2.0.0.36\5b32f9baa0c0371c0dc80a3b88794960af0c6b44\DiffPatch-2.0.0.36-all.jar
+ - C:\Users\elett\.mcreator\gradle\caches\neoformruntime\intermediate_results\patch_9837bd558384df0374e1b4137da48b1cf59084ec_output.zip
+ - C:\Users\elett\.mcreator\gradle\caches\modules-2\files-2.1\net.neoforged\neoforge\21.1.238\39b01eff64edb754efab87dcf5c73e7451ad2b12\neoforge-21.1.238-userdev.jar
+ - --prefix
+ - patches/
+ - --patch
+ - --archive
+ - ZIP
+ - --output
+ - ./output.zip
+ - --log-level
+ - WARN
+ - --mode
+ - OFFSET
+ - --archive-rejects
+ - ZIP
+ - --reject
+ - ./outputRejects.zip
+ - --base-path-prefix
+ - a/
+ - --modified-path-prefix
+ - b/
+--------------------------------------------------------------------------------
+

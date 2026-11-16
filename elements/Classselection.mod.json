@@ -1,0 +1,106 @@
+{
+  "_fv": 89,
+  "_type": "gui",
+  "definition": {
+    "type": 0,
+    "width": 426,
+    "height": 240,
+    "inventoryOffsetX": 0,
+    "inventoryOffsetY": 0,
+    "renderBgLayer": false,
+    "doesPauseGame": false,
+    "components": [
+      {
+        "type": "dynamic_image",
+        "data": {
+          "name": "dynamic_image_0",
+          "image": "class_gui.png",
+          "width": 426,
+          "height": 240,
+          "x": 1,
+          "y": 0,
+          "locked": false
+        }
+      },
+      {
+        "type": "enhanced_image_button",
+        "data": {
+          "image": "2e37c814-f84c-44ba-a59c-829d3b90edf6.png",
+          "hoveredImage": "",
+          "pressedImage": "",
+          "textColor": {
+            "value": -1,
+            "falpha": 0.0
+          },
+          "textShadow": true,
+          "fontScale": 100,
+          "togglePressedTexture": false,
+          "name": "enhanced_image_button_2e37c814f84c44baa59c829d3b90",
+          "text": "",
+          "isUndecorated": true,
+          "onClick": "ButtonLEFTClicked",
+          "width": 33,
+          "height": 33,
+          "x": 57,
+          "y": 102,
+          "locked": false
+        }
+      },
+      {
+        "type": "enhanced_image_button",
+        "data": {
+          "image": "2fd35459-beb5-45e6-b77f-3e6dede51c82.png",
+          "hoveredImage": "",
+          "pressedImage": "",
+          "textColor": {
+            "value": -1,
+            "falpha": 0.0
+          },
+          "textShadow": true,
+          "fontScale": 100,
+          "togglePressedTexture": false,
+          "name": "enhanced_image_button_2fd35459beb545e6b77f3e6dede5",
+          "text": "",
+          "isUndecorated": true,
+          "onClick": "ButtonRIGHTClicked",
+          "width": 33,
+          "height": 33,
+          "x": 346,
+          "y": 102,
+          "locked": false
+        }
+      },
+      {
+        "type": "enhanced_image_button",
+        "data": {
+          "image": "cd536f70-2131-4592-9fe8-2b959bf4c341.png",
+          "hoveredImage": "",
+          "pressedImage": "",
+          "textColor": {
+            "value": -1,
+            "falpha": 0.0
+          },
+          "textShadow": true,
+          "fontScale": 100,
+          "togglePressedTexture": false,
+          "name": "enhanced_image_button_cd536f70213145929fe82b959bf4",
+          "text": "",
+          "isUndecorated": true,
+          "onClick": "SetCLASS",
+          "width": 77,
+          "height": 28,
+          "x": 190,
+          "y": 190,
+          "locked": false
+        }
+      }
+    ],
+    "gridSettings": {
+      "sx": 18,
+      "sy": 18,
+      "ox": 11,
+      "oy": 15,
+      "snapOnGrid": false
+    }
+  }
+}

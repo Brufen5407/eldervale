@@ -1,0 +1,19 @@
+{
+  "_fv": 89,
+  "_type": "projectile",
+  "definition": {
+    "projectileItem": "Items.BREEZE_ROD",
+    "showParticles": true,
+    "actionSound": "CUSTOM:magic_arrow",
+    "igniteFire": true,
+    "disableGravity": true,
+    "disableDiscarding": false,
+    "power": 1.5,
+    "damage": 0.2,
+    "knockback": 0,
+    "entityModel": "Modelmagic_arrow",
+    "customModelTexture": "magic_arrow.png",
+    "modelWidth": 0.5,
+    "modelHeight": 0.5
+  }
+}
