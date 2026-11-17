@@ -19,7 +19,7 @@ public class KeySkill1Procedure {
 			RangerSkill1Procedure.execute(world, x, y, z, entity);
 		}
 		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("monk")) {
-			Monkskill1Procedure.execute(world, entity);
+			Monkskill1Procedure.execute(entity);
 		}
 	}
 }

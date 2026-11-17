@@ -19,7 +19,7 @@ public class Skill2returniconProcedure {
 			skill2_image = "ranger_skill2.png";
 		}
 		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("monk")) {
-			skill2_image = "monk_skill2.png";
+			skill2_image = "monk_skill1.png";
 		}
 		return skill2_image;
 	}

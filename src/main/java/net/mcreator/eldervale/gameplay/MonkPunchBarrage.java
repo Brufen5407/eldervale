@@ -51,7 +51,7 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
 public class MonkPunchBarrage {
 
 	// ---- Settings (edit here) ----
-	private static final int SKILL_SLOT = 2;              
+	private static final int SKILL_SLOT = 1;              
 	private static final double MANA_COST = 25.0D;         // must match the MCreator procedure (used for the refund)
 	private static final int PUNCHES = 5;
 	private static final int PUNCH_INTERVAL = 4;           // ticks between punches (4 = 0.2s)

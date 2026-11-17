@@ -1,6 +1,3 @@
-/summon eldervale:manichino_ranger
-/summon minecraft:husk
-/summon eldervale:manichino_ranger
 /gamemode survival
 /kill @e
 /time set day
@@ -47,4 +44,7 @@
 /fill -8 -28 13 ~ ~ ~ minecraft:cobbled_deepslate
 /summon minecraft:husk
 /gamerule keepInventory true
+/summon minecraft:husk
+/gamemode spectator
+/gamemode survival
 /summon minecraft:husk
