@@ -114,6 +114,7 @@ public class EldervaleModVariables {
 		clone.SKILL2_MAX_CD = original.SKILL2_MAX_CD;
 		clone.paladin_shields = original.paladin_shields;
 		clone.Monk_Combo_CD = original.Monk_Combo_CD;
+		clone.ATTACK_SPEED = original.ATTACK_SPEED;
 		if (!event.isWasDeath()) {
 			clone.berserk_mode = original.berserk_mode;
 			clone.ranger_hitcooldown = original.ranger_hitcooldown;
@@ -301,6 +302,7 @@ public class EldervaleModVariables {
 		public boolean paladin_shields = false;
 		public boolean ranger_hitcooldown = false;
 		public double Monk_Combo_CD = 0;
+		public double ATTACK_SPEED = 0;
 
 		@Override
 		public CompoundTag serializeNBT(HolderLookup.Provider lookupProvider) {
@@ -332,6 +334,7 @@ public class EldervaleModVariables {
 			nbt.putBoolean("paladin_shields", paladin_shields);
 			nbt.putBoolean("ranger_hitcooldown", ranger_hitcooldown);
 			nbt.putDouble("Monk_Combo_CD", Monk_Combo_CD);
+			nbt.putDouble("ATTACK_SPEED", ATTACK_SPEED);
 			return nbt;
 		}
 
@@ -364,6 +367,7 @@ public class EldervaleModVariables {
 			paladin_shields = nbt.getBoolean("paladin_shields");
 			ranger_hitcooldown = nbt.getBoolean("ranger_hitcooldown");
 			Monk_Combo_CD = nbt.getDouble("Monk_Combo_CD");
+			ATTACK_SPEED = nbt.getDouble("ATTACK_SPEED");
 		}
 
 		public void markSyncDirty() {

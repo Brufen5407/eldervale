@@ -21,5 +21,8 @@ public class Skill2classProcedure {
 		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("monk")) {
 			Monkskill2Procedure.execute(entity);
 		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("assassin")) {
+			AssassinSkill2Procedure.execute(world, x, y, z, entity);
+		}
 	}
 }

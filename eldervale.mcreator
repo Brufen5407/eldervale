@@ -831,6 +831,122 @@
         ]
       },
       "path": "~/classes/monk/skill"
+    },
+    {
+      "name": "Assassinstat",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "assassinstat",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/AssassinstatProcedure.java"
+        ]
+      },
+      "path": "~/classes/assassin "
+    },
+    {
+      "name": "AssassinSkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "assassin_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/AssassinSkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/assassin /skill"
+    },
+    {
+      "name": "AssassinSkill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "assassin_skill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/AssassinSkill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/assassin /skill"
+    },
+    {
+      "name": "AssassinPassive",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "assassin_passive",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "sourceentity",
+            "type": "entity"
+          },
+          {
+            "name": "amount",
+            "type": "number"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/AssassinPassiveProcedure.java"
+        ]
+      },
+      "path": "~/classes/assassin /skill"
     }
   ],
   "variable_elements": [
@@ -1019,6 +1135,12 @@
       "type": "logic",
       "scope": "map",
       "value": "false"
+    },
+    {
+      "name": "ATTACK_SPEED",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0"
     }
   ],
   "sound_elements": [
@@ -1182,6 +1304,15 @@
           },
           {
             "name": "monk",
+            "children": [
+              {
+                "name": "skill",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "assassin ",
             "children": [
               {
                 "name": "skill",

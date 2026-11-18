@@ -20,6 +20,7 @@
   "minecraft:adventure/kill_all_mobs": {
     "criteria": {
       "minecraft:zombie": "2026-11-14 23:23:52 +0100",
+      "minecraft:creeper": "2026-11-18 03:08:27 +0100",
       "minecraft:husk": "2026-11-13 17:29:25 +0100",
       "minecraft:slime": "2026-11-13 17:29:12 +0100"
     },
@@ -304,6 +305,18 @@
   "minecraft:recipes/building_blocks/polished_deepslate_stairs_from_cobbled_deepslate_stonecutting": {
     "criteria": {
       "has_cobbled_deepslate": "2026-11-16 01:44:49 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/misc/firework_rocket_simple": {
+    "criteria": {
+      "has_gunpowder": "2026-11-18 03:08:27 +0100"
+    },
+    "done": true
+  },
+  "minecraft:recipes/redstone/tnt": {
+    "criteria": {
+      "has_gunpowder": "2026-11-18 03:08:27 +0100"
     },
     "done": true
   },

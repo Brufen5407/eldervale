@@ -1,11 +1,3 @@
-/gamemode survival
-/kill @e
-/time set day
-/summon eldervale:magic_arrow
-/tick freeze
-/summon eldervale:magic_arrow
-/give Dev bow[
-/give Dev bow
 /give Dev minecraft:breeze_rod
 /give Dev eldervale:classselector
 /tick unfreeze
@@ -48,3 +40,11 @@
 /gamemode spectator
 /gamemode survival
 /summon minecraft:husk
+/give @a eldervale:classselector
+/gamemode
+/gamemode creative
+/time set day
+/summon minecraft:zombie
+/summon minecraft:parrot
+/summon minecraft:husk
+/gamemode survival
