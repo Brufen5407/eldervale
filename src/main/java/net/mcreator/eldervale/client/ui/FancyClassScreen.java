@@ -46,7 +46,12 @@ public class FancyClassScreen extends AbstractContainerScreen<ClassselectionMenu
 	//  CLASS DATA  (edit texts and stats here)
 	//  stats = {HP, DEF, ATT SPEED, ATT, MANA, MANA REGEN, SPEED}
 	// ---------------------------------------------------------------
-	private record Skill(String name, String cost, String desc) {}
+	// soon = true: skill not implemented in the code yet (shows COMING SOON)
+	private record Skill(String name, String cost, String desc, boolean soon) {
+		Skill(String name, String cost, String desc) {
+			this(name, cost, desc, false);
+		}
+	}
 
 	private record Cls(String name, String icon, int color, double[] stats, Skill[] skills) {}
 
@@ -67,12 +72,30 @@ public class FancyClassScreen extends AbstractContainerScreen<ClassselectionMenu
 					new Skill("DECOY", "35 mana - CD 25s", "The player gains speed and invisibility for 5s, allowing escape, and summons a dummy that draws mob aggro for 8s, then disappears."),
 					new Skill("MAGIC ARROWS", "40 mana - CD 12s", "The player leaps backward and fires 3 magic arrows at the enemy."),
 					new Skill("CRAZY REFLEX", "", "When the player takes damage they gain Speed I for 3 seconds. Cooldown 8s.")}),
-			new Cls("MAGE", "mage_icon.png", 0x6EA8FF, new double[]{20, 1, 3.0, 0.5, 160, 10, 0.10}, null),
-			new Cls("ASSASSIN", "assassin_icon.png", 0xA55CFF, new double[]{25, 2, 5.0, 1.5, 70, 4, 0.14}, null),
-			new Cls("MONK", "monk_icon.png", 0xFFA24A, new double[]{35, 5, 4.8, 1.8, 90, 6, 0.13}, null),
-			new Cls("WEREWOLF", "werewolf_icon.png", 0xB08E6A, new double[]{40, 6, 4.5, 1.7, 60, 3, 0.12}, null),
-			new Cls("ALCHEMIST", "alchemist_icon.png", 0x4FE0C0, new double[]{20, 1, 3.2, 0.7, 150, 10, 0.10}, null),
-			new Cls("SPELLBLADE", "spellblade_icon.png", 0xFF6BD6, new double[]{30, 4, 4.2, 1.7, 120, 8, 0.11}, null)};
+			new Cls("MAGE", "mage_icon.png", 0x6EA8FF, new double[]{20, 1, 3.0, 0.5, 160, 10, 0.10}, new Skill[]{
+					new Skill("ARCANE NOVA", "40 mana - CD 12s", "The Mage releases an arcane explosion around himself, damaging and knocking back all enemies within a radius of 5.", true),
+					new Skill("METEOR STRIKE", "65 mana - CD 20s", "A meteor falls on a chosen point within 12 blocks, causing a powerful magic explosion that damages all enemies in the area.", true),
+					new Skill("ARCANE MASTERY", "", "Each time the Mage uses a skill he gains +10% magic damage for 4s, stacking up to 3 times.", true)}),
+			new Cls("ASSASSIN", "assassin_icon.png", 0xA55CFF, new double[]{25, 2, 5.0, 1.5, 70, 4, 0.14}, new Skill[]{
+					new Skill("SHADOW STRIKE", "25 mana - CD 8s", "The Assassin dashes to the nearest enemy and strikes from behind, dealing bonus damage if the target is not looking at him. He turns invisible for 4s."),
+					new Skill("SMOKE BOMB", "30 mana - CD 18s", "A smoke cloud in a radius of 4 slows nearby enemies. The Assassin gains invisibility for 5s and a burst of speed for 2s. Enemies losing aggro: coming soon."),
+					new Skill("DEADLY AMBUSH", "", "+25% damage against enemies that are not targeting the Assassin. Speed and invisibility for 2s: coming soon.")}),
+			new Cls("MONK", "monk_icon.png", 0xFFA24A, new double[]{35, 5, 5.0, 1.8, 100, 5, 0.105}, new Skill[]{
+					new Skill("THOUSAND FISTS", "25 mana - CD 7s", "The Monk teleports in front of a nearby enemy and throws 5 lightning-fast punches, each dealing 40% of his ATT. A landed combo adds a Flow State point."),
+					new Skill("DIVINE PRAYER", "35 mana - CD 20s", "The Monk prays and cannot move for 5s. A sacred aura pushes enemies back in a radius of 5 and heals him gradually."),
+					new Skill("FLOW STATE", "", "Each consecutive hit raises attack speed: 2nd +5%, 3rd +10%, 4th and beyond +15%. The combo resets after 3s without hitting.")}),
+			new Cls("WEREWOLF", "werewolf_icon.png", 0xB08E6A, new double[]{40, 6, 4.5, 1.7, 60, 3, 0.12}, new Skill[]{
+					new Skill("BEAST TRANSFORMATION", "30 mana - CD 25s", "For 8s the Werewolf takes his beast form: +30% attack speed, +20% movement speed and 1 HP regenerated per second.", true),
+					new Skill("FERAL POUNCE", "20 mana - CD 10s", "The Werewolf leaps at the nearest enemy within 8 blocks, landing with an area attack that slows nearby enemies.", true),
+					new Skill("PREDATOR'S INSTINCT", "", "Below 50% health the Werewolf gains +15% movement speed and +15% attack speed.", true)}),
+			new Cls("ALCHEMIST", "alchemist_icon.png", 0x4FE0C0, new double[]{20, 1, 3.2, 0.7, 150, 10, 0.10}, new Skill[]{
+					new Skill("VOLATILE BREW", "35 mana - CD 12s", "An unstable potion explodes on impact, creating a toxic cloud in a radius of 4. Enemies take damage over time and are slowed for 4s.", true),
+					new Skill("REACTIVE COMPOUND", "30 mana - CD 14s", "A substance sticks to the first enemy hit and violently explodes after 3s.", true),
+					new Skill("CONTAMINATION", "", "Enemies hit by a potion accumulate contamination. After 3 applications it explodes for extra damage.", true)}),
+			new Cls("SPELLBLADE", "spellblade_icon.png", 0xFF6BD6, new double[]{30, 4, 4.2, 1.7, 120, 8, 0.11}, new Skill[]{
+					new Skill("ARCANE SLASH", "25 mana - CD 8s", "The Spellblade charges his weapon with arcane energy and slashes, releasing a magic wave that damages every enemy in its path.", true),
+					new Skill("PHANTOM EDGE", "40 mana - CD 16s", "A magic blade strikes the nearest enemy within 8 blocks, dealing magic damage and briefly slowing it.", true),
+					new Skill("ARCANE CONVERSION", "", "Each landed physical attack restores 2 mana. Can trigger once every 2s.", true)})};
 
 	private static final ResourceLocation[] ICONS = new ResourceLocation[CLASSES.length];
 	private static final double[] MAX = new double[7];
@@ -440,8 +463,14 @@ public class FancyClassScreen extends AbstractContainerScreen<ClassselectionMenu
 			outlined(g, k.name(), x + kw + 4, y, 0.85F, WHITE, BLACK);
 
 			float yy = y + 10;
-			if (!k.cost().isEmpty()) {
-				plain(g, k.cost(), x, yy, 0.62F, 0xFF7FC8FF);
+			if (!k.cost().isEmpty() || k.soon()) {
+				float cw = 0;
+				if (!k.cost().isEmpty()) {
+					plain(g, k.cost(), x, yy, 0.62F, 0xFF7FC8FF);
+					cw = this.font.width(k.cost()) * 0.62F + 5;
+				}
+				if (k.soon())
+					plain(g, "COMING SOON", x + cw, yy, 0.62F, 0xFFFFB347);
 				yy += 7;
 			}
 			for (FormattedCharSequence line : lines.get(i)) {
@@ -457,7 +486,7 @@ public class FancyClassScreen extends AbstractContainerScreen<ClassselectionMenu
 	}
 
 	private float blockHeight(Skill k, int lineCount, float ds) {
-		float head = k.cost().isEmpty() ? 10 : 17;
+		float head = k.cost().isEmpty() && !k.soon() ? 10 : 17;
 		return head + lineCount * 10 * ds + 8;
 	}
 

@@ -22,7 +22,7 @@ public class Skill2classProcedure {
 			Monkskill2Procedure.execute(entity);
 		}
 		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("assassin")) {
-			AssassinSkill2Procedure.execute(world, x, y, z, entity);
+			AssassinSkill2Procedure.execute(entity);
 		}
 	}
 }

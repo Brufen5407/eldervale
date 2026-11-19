@@ -1,16 +1,3 @@
-/give Dev minecraft:breeze_rod
-/give Dev eldervale:classselector
-/tick unfreeze
-/tick freeze
-/gamemode creative
-/give Dev eldervale:classselector
-/gamemode survival
-/tick unfreeze
-/summon minecraft:husk
-/gamemode creative
-/give Dev eldervale:classselector
-/summon minecraft:husk
-/summon minecraft:allay
 /summon minecraft:zoglin
 /gamemode survival
 /gamemode creative
@@ -48,3 +35,16 @@
 /summon minecraft:parrot
 /summon minecraft:husk
 /gamemode survival
+/summon minecraft:husk
+/gamemode creative
+/1236547897
+/eteam disband
+/eteam leader
+/eteam create Brufen
+/eteam info
+/eteam kick Brufen
+/eteam kick Dev
+/eteam disband
+/gamemode survival
+/summon minecraft:husk
+/summon minecraft:warden

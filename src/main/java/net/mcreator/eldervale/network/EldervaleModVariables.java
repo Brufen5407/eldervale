@@ -118,6 +118,7 @@ public class EldervaleModVariables {
 		if (!event.isWasDeath()) {
 			clone.berserk_mode = original.berserk_mode;
 			clone.ranger_hitcooldown = original.ranger_hitcooldown;
+			clone.werewolf_mode = original.werewolf_mode;
 		}
 		event.getEntity().setData(PLAYER_VARIABLES, clone);
 	}
@@ -303,6 +304,7 @@ public class EldervaleModVariables {
 		public boolean ranger_hitcooldown = false;
 		public double Monk_Combo_CD = 0;
 		public double ATTACK_SPEED = 0;
+		public boolean werewolf_mode = false;
 
 		@Override
 		public CompoundTag serializeNBT(HolderLookup.Provider lookupProvider) {
@@ -335,6 +337,7 @@ public class EldervaleModVariables {
 			nbt.putBoolean("ranger_hitcooldown", ranger_hitcooldown);
 			nbt.putDouble("Monk_Combo_CD", Monk_Combo_CD);
 			nbt.putDouble("ATTACK_SPEED", ATTACK_SPEED);
+			nbt.putBoolean("werewolf_mode", werewolf_mode);
 			return nbt;
 		}
 
@@ -368,6 +371,7 @@ public class EldervaleModVariables {
 			ranger_hitcooldown = nbt.getBoolean("ranger_hitcooldown");
 			Monk_Combo_CD = nbt.getDouble("Monk_Combo_CD");
 			ATTACK_SPEED = nbt.getDouble("ATTACK_SPEED");
+			werewolf_mode = nbt.getBoolean("werewolf_mode");
 		}
 
 		public void markSyncDirty() {

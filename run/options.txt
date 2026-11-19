@@ -7,7 +7,7 @@ entityShadows:true
 forceUnicodeFont:false
 japaneseGlyphVariants:false
 fov:1.0
-fovEffectScale:1.0
+fovEffectScale:0.0
 darknessEffectScale:1.0
 glintSpeed:0.5
 glintStrength:0.75
@@ -24,7 +24,7 @@ reducedDebugInfo:false
 renderClouds:"false"
 renderDistance:5
 simulationDistance:12
-screenEffectScale:1.0
+screenEffectScale:0.0
 soundDevice:""
 autoJump:false
 operatorItemsTab:false
