@@ -1,4 +1,4 @@
-package net.mcreator.eldervale.team;
+package net.mcreator.eldervale.party;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -10,22 +10,45 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.CompoundTag;
 
 /**
- * Data of one team: id, name, leader and members (player UUID -> last known name).
- * The last known name lets the team list show offline members.
+ * Data of one party: id, name, leader and members.
+ * Each member keeps the last known name, class and level, so the party list can show offline members.
  * Members keep their join order (the leader is the first at creation).
  * Server-side data only: no client classes here.
  */
-public class Team {
+public class Party {
+
+	public static class Member {
+		private String name;
+		private String playerClass = "";
+		private int level = 1;
+
+		Member(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getPlayerClass() {
+			return playerClass;
+		}
+
+		public int getLevel() {
+			return level;
+		}
+	}
+
 	private final UUID id;
 	private String name;
 	private UUID leader;
-	private final LinkedHashMap<UUID, String> members = new LinkedHashMap<>();
+	private final LinkedHashMap<UUID, Member> members = new LinkedHashMap<>();
 
-	public Team(UUID id, String name, UUID leader, String leaderName) {
+	public Party(UUID id, String name, UUID leader, String leaderName) {
 		this.id = id;
 		this.name = name;
 		this.leader = leader;
-		this.members.put(leader, leaderName);
+		this.members.put(leader, new Member(leaderName));
 	}
 
 	public UUID getId() {
@@ -52,7 +75,7 @@ public class Team {
 		return leader.equals(player);
 	}
 
-	public Map<UUID, String> getMembers() {
+	public Map<UUID, Member> getMembers() {
 		return Collections.unmodifiableMap(members);
 	}
 
@@ -65,11 +88,12 @@ public class Team {
 	}
 
 	public String nameOf(UUID player) {
-		return members.get(player);
+		Member m = members.get(player);
+		return m == null ? null : m.name;
 	}
 
 	void addMember(UUID player, String playerName) {
-		members.put(player, playerName);
+		members.put(player, new Member(playerName));
 	}
 
 	void removeMember(UUID player) {
@@ -77,14 +101,23 @@ public class Team {
 	}
 
 	void setMemberName(UUID player, String playerName) {
-		if (members.containsKey(player))
-			members.put(player, playerName);
+		Member m = members.get(player);
+		if (m != null)
+			m.name = playerName;
+	}
+
+	void setMemberStats(UUID player, String playerClass, int level) {
+		Member m = members.get(player);
+		if (m != null) {
+			m.playerClass = playerClass == null ? "" : playerClass;
+			m.level = level;
+		}
 	}
 
 	/** Case-insensitive search among the stored member names. */
 	public UUID findByName(String playerName) {
-		for (Map.Entry<UUID, String> e : members.entrySet())
-			if (e.getValue().equalsIgnoreCase(playerName))
+		for (Map.Entry<UUID, Member> e : members.entrySet())
+			if (e.getValue().name.equalsIgnoreCase(playerName))
 				return e.getKey();
 		return null;
 	}
@@ -98,27 +131,32 @@ public class Team {
 		tag.putString("Name", name);
 		tag.putUUID("Leader", leader);
 		ListTag list = new ListTag();
-		for (Map.Entry<UUID, String> e : members.entrySet()) {
+		for (Map.Entry<UUID, Member> e : members.entrySet()) {
 			CompoundTag m = new CompoundTag();
 			m.putUUID("Id", e.getKey());
-			m.putString("Name", e.getValue());
+			m.putString("Name", e.getValue().name);
+			m.putString("Class", e.getValue().playerClass);
+			m.putInt("Level", e.getValue().level);
 			list.add(m);
 		}
 		tag.put("Members", list);
 		return tag;
 	}
 
-	public static Team load(CompoundTag tag) {
+	public static Party load(CompoundTag tag) {
 		UUID leader = tag.getUUID("Leader");
-		Team team = new Team(tag.getUUID("Id"), tag.getString("Name"), leader, "?");
-		team.members.clear();
+		Party party = new Party(tag.getUUID("Id"), tag.getString("Name"), leader, "?");
+		party.members.clear();
 		ListTag list = tag.getList("Members", Tag.TAG_COMPOUND);
 		for (int i = 0; i < list.size(); i++) {
 			CompoundTag m = list.getCompound(i);
-			team.members.put(m.getUUID("Id"), m.getString("Name"));
+			Member member = new Member(m.getString("Name"));
+			member.playerClass = m.getString("Class");
+			member.level = Math.max(1, m.getInt("Level"));
+			party.members.put(m.getUUID("Id"), member);
 		}
-		if (!team.members.containsKey(leader))
-			team.members.put(leader, "?");
-		return team;
+		if (!party.members.containsKey(leader))
+			party.members.put(leader, new Member("?"));
+		return party;
 	}
 }

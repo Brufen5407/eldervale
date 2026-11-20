@@ -1,4 +1,8 @@
-package net.mcreator.eldervale.team;
+package net.mcreator.eldervale.party;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -8,18 +12,20 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.bus.api.EventPriority;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.network.chat.Component;
 
 /**
- * Team events (server only):
- *  - damage between teammates is cancelled (melee, arrows and any damage whose source is a teammate);
- *  - join / leave notifications for the team.
+ * Party events (server only):
+ *  - damage between allies is cancelled (melee, arrows and any damage whose source is an ally);
+ *  - login / logout hooks.
  *
  * Skills that damage players WITHOUT a source entity (hurt with a bare DamageSource) are not
  * recognised here: give them the player as source (level.damageSources().playerAttack(player)).
  */
 @EventBusSubscriber
-public class TeamEvents {
+public class PartyEvents {
+
+	private static final int WARN_PAUSE_TICKS = 20; // the "cannot damage" toast appears at most once per second
+	private static final Map<UUID, Long> LAST_WARN = new HashMap<>();
 
 	// Highest priority: the hit is cancelled before DefenceHandler or other listeners touch it.
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -28,26 +34,35 @@ public class TeamEvents {
 			return;
 		if (!(event.getSource().getEntity() instanceof ServerPlayer attacker))
 			return;
-		if (TeamManager.areTeammates(attacker, victim)) {
-			event.setCanceled(true);
-			attacker.displayClientMessage(Component.literal("You cannot damage members of your team."), true);
+		if (!PartyManager.areAllies(attacker, victim))
+			return;
+
+		event.setCanceled(true);
+		long now = attacker.level().getGameTime();
+		Long last = LAST_WARN.get(attacker.getUUID());
+		if (last == null || now - last >= WARN_PAUSE_TICKS) {
+			LAST_WARN.put(attacker.getUUID(), now);
+			PartySync.toast(attacker, PartyNotifyPayload.ERROR, "Party", "You cannot damage members of your party.");
 		}
 	}
 
 	@SubscribeEvent
 	public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player)
-			TeamManager.onLogin(player);
+			PartyManager.onLogin(player);
 	}
 
 	@SubscribeEvent
 	public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-		if (event.getEntity() instanceof ServerPlayer player)
-			TeamManager.onLogout(player);
+		if (event.getEntity() instanceof ServerPlayer player) {
+			PartyManager.onLogout(player);
+			LAST_WARN.remove(player.getUUID());
+		}
 	}
 
 	@SubscribeEvent
 	public static void onServerStopped(ServerStoppedEvent event) {
-		TeamManager.clearInvites();
+		PartyManager.clearInvites();
+		LAST_WARN.clear();
 	}
 }

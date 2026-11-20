@@ -862,22 +862,6 @@
           {
             "name": "entity",
             "type": "entity"
-          },
-          {
-            "name": "x",
-            "type": "number"
-          },
-          {
-            "name": "y",
-            "type": "number"
-          },
-          {
-            "name": "z",
-            "type": "number"
-          },
-          {
-            "name": "world",
-            "type": "world"
           }
         ],
         "files": [
@@ -906,31 +890,23 @@
       "path": "~/classes/assassin /skill"
     },
     {
-      "name": "AssassinPassive",
+      "name": "WerewolfStat",
       "type": "procedure",
       "compiles": true,
       "locked_code": false,
-      "registry_name": "assassin_passive",
+      "registry_name": "werewolf_stat",
       "metadata": {
         "dependencies": [
           {
             "name": "entity",
             "type": "entity"
-          },
-          {
-            "name": "sourceentity",
-            "type": "entity"
-          },
-          {
-            "name": "amount",
-            "type": "number"
           }
         ],
         "files": [
-          "src/main/java/net/mcreator/eldervale/procedures/AssassinPassiveProcedure.java"
+          "src/main/java/net/mcreator/eldervale/procedures/WerewolfStatProcedure.java"
         ]
       },
-      "path": "~/classes/assassin /skill"
+      "path": "~/classes/werewolf"
     }
   ],
   "variable_elements": [
@@ -1125,6 +1101,12 @@
       "type": "number",
       "scope": "player_persistent",
       "value": "0"
+    },
+    {
+      "name": "werewolf_mode",
+      "type": "logic",
+      "scope": "player_lifetime",
+      "value": "false"
     }
   ],
   "sound_elements": [
@@ -1306,7 +1288,22 @@
           },
           {
             "name": "werewolf",
-            "children": []
+            "children": [
+              {
+                "name": "skills",
+                "children": [
+                  {
+                    "name": "skill1",
+                    "children": [
+                      {
+                        "name": "rendering",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
