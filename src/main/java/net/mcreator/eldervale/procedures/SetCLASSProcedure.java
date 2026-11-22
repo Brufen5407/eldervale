@@ -17,21 +17,18 @@ public class SetCLASSProcedure {
 				_vars.PLAYER_CLASS = "paladin";
 				_vars.markSyncDirty();
 			}
-			PaladinstatProcedure.execute(entity);
 		} else if (entity.getData(EldervaleModVariables.PLAYER_VARIABLES).page == 1) {
 			{
 				EldervaleModVariables.PlayerVariables _vars = entity.getData(EldervaleModVariables.PLAYER_VARIABLES);
 				_vars.PLAYER_CLASS = "berserker";
 				_vars.markSyncDirty();
 			}
-			BerserkerStatProcedure.execute(entity);
 		} else if (entity.getData(EldervaleModVariables.PLAYER_VARIABLES).page == 2) {
 			{
 				EldervaleModVariables.PlayerVariables _vars = entity.getData(EldervaleModVariables.PLAYER_VARIABLES);
 				_vars.PLAYER_CLASS = "ranger";
 				_vars.markSyncDirty();
 			}
-			RangerstatProcedure.execute(entity);
 		} else if (entity.getData(EldervaleModVariables.PLAYER_VARIABLES).page == 3) {
 			{
 				EldervaleModVariables.PlayerVariables _vars = entity.getData(EldervaleModVariables.PLAYER_VARIABLES);
@@ -44,14 +41,12 @@ public class SetCLASSProcedure {
 				_vars.PLAYER_CLASS = "assassin";
 				_vars.markSyncDirty();
 			}
-			AssassinstatProcedure.execute(entity);
 		} else if (entity.getData(EldervaleModVariables.PLAYER_VARIABLES).page == 5) {
 			{
 				EldervaleModVariables.PlayerVariables _vars = entity.getData(EldervaleModVariables.PLAYER_VARIABLES);
 				_vars.PLAYER_CLASS = "monk";
 				_vars.markSyncDirty();
 			}
-			MonkStatProcedure.execute(entity);
 		} else if (entity.getData(EldervaleModVariables.PLAYER_VARIABLES).page == 6) {
 			{
 				EldervaleModVariables.PlayerVariables _vars = entity.getData(EldervaleModVariables.PLAYER_VARIABLES);

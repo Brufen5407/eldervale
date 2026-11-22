@@ -1,0 +1,1396 @@
+{
+  "mod_elements": [
+    {
+      "name": "XpLevel",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "xp_level",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "damagesource",
+            "type": "damagesource"
+          },
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "sourceentity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/XpLevelProcedure.java"
+        ]
+      },
+      "path": "~/XP - LEVEL "
+    },
+    {
+      "name": "Attribute",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "attribute",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/AttributeProcedure.java"
+        ]
+      },
+      "path": "~/player"
+    },
+    {
+      "name": "Playerhealt",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "playerhealt",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/PlayerhealtProcedure.java"
+        ]
+      },
+      "path": "~/player"
+    },
+    {
+      "name": "PlayerRespawn",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "player_respawn",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/PlayerRespawnProcedure.java"
+        ]
+      },
+      "path": "~/player"
+    },
+    {
+      "name": "LVLLabel",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "lvl_label",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "return_type": "string",
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/LVLLabelProcedure.java"
+        ]
+      },
+      "path": "~/player"
+    },
+    {
+      "name": "Classselection",
+      "type": "gui",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "classselection",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/eldervale/client/gui/ClassselectionScreen.java",
+          "src/main/java/net/mcreator/eldervale/network/ClassselectionButtonMessage.java",
+          "src/main/java/net/mcreator/eldervale/world/inventory/ClassselectionMenu.java"
+        ]
+      },
+      "path": "~/classes/gui"
+    },
+    {
+      "name": "ButtonRIGHTClicked",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "button_right_clicked",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/ButtonRIGHTClickedProcedure.java"
+        ]
+      },
+      "path": "~/classes/gui/display"
+    },
+    {
+      "name": "ButtonLEFTClicked",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "button_left_clicked",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/ButtonLEFTClickedProcedure.java"
+        ]
+      },
+      "path": "~/classes/gui/display"
+    },
+    {
+      "name": "SetCLASS",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "set_class",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/SetCLASSProcedure.java"
+        ]
+      },
+      "path": "~/classes/gui/display"
+    },
+    {
+      "name": "Shieldsrendering",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "shieldsrendering",
+      "metadata": {
+        "dependencies": [],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/ShieldsrenderingProcedure.java"
+        ]
+      },
+      "path": "~/classes/Paladin/rendering"
+    },
+    {
+      "name": "Shieldrender",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "shieldrender",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "playerRenderEvent",
+            "type": "playerrendering"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/ShieldrenderProcedure.java"
+        ]
+      },
+      "path": "~/classes/Paladin/rendering"
+    },
+    {
+      "name": "Shields",
+      "type": "humanoidmodel",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "shields",
+      "metadata": {
+        "files": []
+      },
+      "path": "~/classes/Paladin/rendering"
+    },
+    {
+      "name": "Paladinskill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "paladinskill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/Paladinskill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/Paladin/skills"
+    },
+    {
+      "name": "Skill1",
+      "type": "keybind",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "skill_1",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/eldervale/network/Skill1Message.java"
+        ]
+      },
+      "path": "~/classes/skills_if/skill1"
+    },
+    {
+      "name": "PaladinPassive",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "paladin_passive",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/PaladinPassiveProcedure.java"
+        ]
+      },
+      "path": "~/classes/Paladin/skills"
+    },
+    {
+      "name": "Paladin_Skill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "paladin_skill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/Paladin_Skill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/Paladin/skills"
+    },
+    {
+      "name": "Skill2",
+      "type": "keybind",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "skill_2",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/eldervale/network/Skill2Message.java"
+        ]
+      },
+      "path": "~/classes/skills_if/skill2"
+    },
+    {
+      "name": "Skill2class",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "skill_2class",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/Skill2classProcedure.java"
+        ]
+      },
+      "path": "~/classes/skills_if/skill2"
+    },
+    {
+      "name": "Skill1returnicon",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "skill_1returnicon",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "return_type": "gui_image",
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/Skill1returniconProcedure.java"
+        ]
+      },
+      "path": "~/classes/skills_if/skill1"
+    },
+    {
+      "name": "Skill2returnicon",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "skill_2returnicon",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "return_type": "gui_image",
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/Skill2returniconProcedure.java"
+        ]
+      },
+      "path": "~/classes/skills_if/skill2"
+    },
+    {
+      "name": "KeySkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "key_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/KeySkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/skills_if/skill1"
+    },
+    {
+      "name": "Mobattribute",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "mobattribute",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/MobattributeProcedure.java"
+        ]
+      },
+      "path": "~/XP - LEVEL "
+    },
+    {
+      "name": "Classselector",
+      "type": "item",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "classselector",
+      "metadata": {
+        "files": [
+          "src/main/resources/assets/eldervale/models/item/classselector.json",
+          "src/main/java/net/mcreator/eldervale/item/ClassselectorItem.java",
+          "src/main/java/net/mcreator/eldervale/item/inventory/ClassselectorInventoryCapability.java"
+        ]
+      },
+      "path": "~/player"
+    },
+    {
+      "name": "BerserkermodeDisplayCondition",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "berserkermode_display_condition",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "return_type": "logic",
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/BerserkermodeDisplayConditionProcedure.java"
+        ]
+      },
+      "path": "~/classes/berserker/skill/passive "
+    },
+    {
+      "name": "Berserkermode",
+      "type": "overlay",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "berserkermode",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/eldervale/client/screens/BerserkermodeOverlay.java"
+        ]
+      },
+      "path": "~/classes/berserker/skill/passive "
+    },
+    {
+      "name": "Berserkeskill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "berserkeskill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/Berserkeskill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/berserker/skill"
+    },
+    {
+      "name": "Berserkeskill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "berserkeskill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/Berserkeskill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/berserker/skill"
+    },
+    {
+      "name": "ManichinoRanger",
+      "type": "livingentity",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "manichino_ranger",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/eldervale/client/renderer/ManichinoRangerRenderer.java",
+          "src/main/java/net/mcreator/eldervale/entity/ManichinoRangerEntity.java"
+        ]
+      },
+      "path": "~/classes/ranger/skill/skill1/manichino /ranger_dummy"
+    },
+    {
+      "name": "RangerSkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "ranger_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/RangerSkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/ranger/skill/skill1"
+    },
+    {
+      "name": "DummyAggro",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "dummy_aggro",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/DummyAggroProcedure.java"
+        ]
+      },
+      "path": "~/classes/ranger/skill/skill1"
+    },
+    {
+      "name": "CD",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "cd",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/CDProcedure.java"
+        ]
+      },
+      "path": "~/player"
+    },
+    {
+      "name": "RangerSkill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "ranger_skill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          },
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/RangerSkill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/ranger/skill"
+    },
+    {
+      "name": "MagicArrow",
+      "type": "projectile",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "magic_arrow",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/eldervale/entity/MagicArrowEntity.java",
+          "src/main/java/net/mcreator/eldervale/client/renderer/MagicArrowRenderer.java"
+        ]
+      },
+      "path": "~/classes/ranger/skill"
+    },
+    {
+      "name": "Monkskill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "monkskill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/Monkskill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/monk/skill"
+    },
+    {
+      "name": "Monkskill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "monkskill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/Monkskill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/monk/skill"
+    },
+    {
+      "name": "AssassinSkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "assassin_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/AssassinSkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/assassin /skill"
+    },
+    {
+      "name": "AssassinSkill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "assassin_skill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/AssassinSkill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/assassin /skill"
+    },
+    {
+      "name": "CritHandler",
+      "type": "code",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "crit_handler",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/eldervale/CritHandler.java"
+        ]
+      },
+      "path": "~/player"
+    },
+    {
+      "name": "WerewolfSkill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "werewolf_skill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/WerewolfSkill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/werewolf/skills"
+    },
+    {
+      "name": "WerewolfSkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "werewolf_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/WerewolfSkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/werewolf/skills"
+    },
+    {
+      "name": "AlchemistSkill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "alchemist_skill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/AlchemistSkill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/alchemist"
+    },
+    {
+      "name": "AlchemistSkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "alchemist_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/AlchemistSkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/alchemist"
+    },
+    {
+      "name": "SpellbladeSkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "spellblade_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/SpellbladeSkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/spellblade"
+    },
+    {
+      "name": "SpellbladeSkill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "spellblade_skill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/SpellbladeSkill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/spellblade"
+    },
+    {
+      "name": "MageSkill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "mage_skill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/MageSkill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/mage"
+    },
+    {
+      "name": "MageSkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "mage_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/MageSkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/mage"
+    }
+  ],
+  "variable_elements": [
+    {
+      "name": "XP",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0"
+    },
+    {
+      "name": "XP_NEXT_LEVEL",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "100.0"
+    },
+    {
+      "name": "HEALT_MAX",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "20.0"
+    },
+    {
+      "name": "MANA",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "100.0"
+    },
+    {
+      "name": "MANA_MAX",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "100.0"
+    },
+    {
+      "name": "ATTACK",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "1.0"
+    },
+    {
+      "name": "DEFENCE",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "1.0"
+    },
+    {
+      "name": "CRITICAL_CHANCE",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "5.0"
+    },
+    {
+      "name": "CRITICAL_DAMAGE",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "150.0"
+    },
+    {
+      "name": "SPEED",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0.1"
+    },
+    {
+      "name": "GOLD",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0"
+    },
+    {
+      "name": "PLAYER_CLASS",
+      "type": "string",
+      "scope": "player_persistent",
+      "value": "\"\""
+    },
+    {
+      "name": "CLASS_LEVEL",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "1.0"
+    },
+    {
+      "name": "SKILL_POINT",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0"
+    },
+    {
+      "name": "STAT_POINT",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0"
+    },
+    {
+      "name": "LEVEL",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "1.0"
+    },
+    {
+      "name": "HEALT",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "20.0"
+    },
+    {
+      "name": "page",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0"
+    },
+    {
+      "name": "paladin_shield",
+      "type": "model",
+      "scope": "global",
+      "value": "null"
+    },
+    {
+      "name": "paladin_shield_texture",
+      "type": "texturelocation",
+      "scope": "global",
+      "value": "null"
+    },
+    {
+      "name": "MANA_REGEN",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "1.0"
+    },
+    {
+      "name": "SKILL1_CD",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "100.0"
+    },
+    {
+      "name": "SKILL2_CD",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "100.0"
+    },
+    {
+      "name": "SKILL1_MAX_CD",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0"
+    },
+    {
+      "name": "SKILL2_MAX_CD",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0"
+    },
+    {
+      "name": "mob_level",
+      "type": "number",
+      "scope": "world",
+      "value": "0"
+    },
+    {
+      "name": "berserk_mode",
+      "type": "logic",
+      "scope": "player_lifetime",
+      "value": "false"
+    },
+    {
+      "name": "paladin_shields",
+      "type": "logic",
+      "scope": "player_persistent",
+      "value": "false"
+    },
+    {
+      "name": "ranger_hitcooldown",
+      "type": "logic",
+      "scope": "player_lifetime",
+      "value": "false"
+    },
+    {
+      "name": "Monk_Combo_CD",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0"
+    },
+    {
+      "name": "Monk_Combo",
+      "type": "logic",
+      "scope": "map",
+      "value": "false"
+    },
+    {
+      "name": "ATTACK_SPEED",
+      "type": "number",
+      "scope": "player_persistent",
+      "value": "0"
+    },
+    {
+      "name": "werewolf_mode",
+      "type": "logic",
+      "scope": "player_lifetime",
+      "value": "false"
+    }
+  ],
+  "sound_elements": [
+    {
+      "name": "magic_arrow",
+      "files": [
+        "yodguard-wind-magic-1-378628-_1_"
+      ],
+      "category": "player",
+      "subtitle": ""
+    }
+  ],
+  "tag_elements": {},
+  "tab_element_order": {},
+  "language_map": {
+    "en_us": {
+      "key.eldervale.skill_1": "Skill 1",
+      "key.eldervale.skill_2": "Skill 2",
+      "item.eldervale.classselector": "Classselector",
+      "entity.eldervale.manichino_ranger": "Ranger decoy",
+      "subtitles.magic_arrow": ""
+    }
+  },
+  "metadata": {
+    "files": [
+      "src/main/java/net/mcreator/eldervale/network/MenuStateUpdateMessage.java",
+      "src/main/java/net/mcreator/eldervale/init/EldervaleModScreens.java",
+      "src/main/java/net/mcreator/eldervale/init/EldervaleModMenus.java",
+      "src/main/java/net/mcreator/eldervale/init/EldervaleModHumanoidModels.java",
+      "src/main/java/net/mcreator/eldervale/init/EldervaleModKeyMappings.java",
+      "src/main/java/net/mcreator/eldervale/init/EldervaleModItems.java",
+      "src/main/java/net/mcreator/eldervale/init/EldervaleModEntityRenderers.java",
+      "src/main/java/net/mcreator/eldervale/init/EldervaleModEntities.java",
+      "src/main/java/net/mcreator/eldervale/world/PortalSavedData.java",
+      "src/main/java/net/mcreator/eldervale/world/BlackHoleManager.java",
+      "src/main/java/net/mcreator/eldervale/mixin/CameraAccessor.java",
+      "src/main/java/net/mcreator/eldervale/init/EldervaleModModels.java",
+      "src/main/java/net/mcreator/eldervale/EldervaleModPlayerAnimationAPI.java",
+      "src/main/java/net/mcreator/eldervale/mixin/LivingEntityRendererMixin.java",
+      "src/main/java/net/mcreator/eldervale/math/CallCounter.java",
+      "src/main/resources/assets/eldervale/sounds.json",
+      "src/main/java/net/mcreator/eldervale/network/EldervaleModVariables.java",
+      "src/main/java/net/mcreator/eldervale/mixin/ItemInHandRendererMixin.java",
+      "src/main/java/net/mcreator/eldervale/mixin/ItemInHandLayerMixin.java",
+      "src/main/java/net/mcreator/eldervale/mixin/PlayerAnimationRendererMixin.java",
+      "src/main/resources/pack.mcmeta",
+      "src/main/java/net/mcreator/eldervale/init/EldervaleModSounds.java",
+      "src/main/java/net/mcreator/eldervale/world/BlockDamageHandler.java",
+      "src/main/java/net/mcreator/eldervale/client/CameraShakeManager.java",
+      "src/main/java/net/mcreator/eldervale/client/renderer/SemiAquaticRenderer.java",
+      "src/main/java/net/mcreator/eldervale/world/BlackHoleSavedData.java",
+      "src/main/java/net/mcreator/eldervale/mixin/LevelRendererMixin.java",
+      "src/main/java/net/mcreator/eldervale/network/CameraShakePayload.java",
+      "src/main/java/net/mcreator/eldervale/ai/OverrideMovementGoal.java",
+      "src/main/java/net/mcreator/eldervale/ai/MoveToStructureGoal.java",
+      "src/main/java/net/mcreator/eldervale/math/CallCooldownManager.java",
+      "src/main/java/net/mcreator/eldervale/network/PlayPlayerAnimationMessage.java",
+      "src/main/java/net/mcreator/eldervale/EldervaleMod.java",
+      "src/main/java/net/mcreator/eldervale/entity/CustomEyeOfEnderEntity.java",
+      "src/main/java/net/mcreator/eldervale/ai/OrbitPositionGoal.java",
+      "src/main/resources/META-INF/neoforge.mods.toml",
+      "src/main/java/net/mcreator/eldervale/client/renderer/CustomEyeOfEnderRenderer.java",
+      "src/main/java/net/mcreator/eldervale/network/NetworkRegister.java",
+      "src/main/java/net/mcreator/eldervale/entity/CustomFireballEntity.java",
+      "src/main/java/net/mcreator/eldervale/client/renderer/CustomFireballRenderer.java",
+      "src/main/java/net/mcreator/eldervale/world/TeleportBlockHandler.java",
+      "src/main/java/net/mcreator/eldervale/ai/MoveToBlockGoal.java",
+      "src/main/resources/eldervale.mixins.json",
+      "src/main/java/net/mcreator/eldervale/mixin/EntityRenderDispatcherMixin.java",
+      "src/main/resources/META-INF/accesstransformer.cfg",
+      "src/main/java/net/mcreator/eldervale/client/CameraShakeClientEvents.java",
+      "src/main/java/net/mcreator/eldervale/mixin/PlayerAnimationMixin.java"
+    ]
+  },
+  "foldersRoot": {
+    "name": "~",
+    "children": [
+      {
+        "name": "XP - LEVEL ",
+        "children": []
+      },
+      {
+        "name": "player",
+        "children": []
+      },
+      {
+        "name": "classes",
+        "children": [
+          {
+            "name": "gui",
+            "children": [
+              {
+                "name": "display",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "Paladin",
+            "children": [
+              {
+                "name": "rendering",
+                "children": []
+              },
+              {
+                "name": "skills",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "skills_if",
+            "children": [
+              {
+                "name": "skill1",
+                "children": []
+              },
+              {
+                "name": "skill2",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "berserker",
+            "children": [
+              {
+                "name": "skill",
+                "children": [
+                  {
+                    "name": "passive ",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "ranger",
+            "children": [
+              {
+                "name": "skill",
+                "children": [
+                  {
+                    "name": "skill1",
+                    "children": [
+                      {
+                        "name": "manichino ",
+                        "children": [
+                          {
+                            "name": "ranger_dummy",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "monk",
+            "children": [
+              {
+                "name": "skill",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "assassin ",
+            "children": [
+              {
+                "name": "skill",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "werewolf",
+            "children": [
+              {
+                "name": "skills",
+                "children": [
+                  {
+                    "name": "skill1",
+                    "children": [
+                      {
+                        "name": "rendering",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "alchemist",
+            "children": []
+          },
+          {
+            "name": "spellblade",
+            "children": []
+          },
+          {
+            "name": "mage",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "workspaceSettings": {
+    "modid": "eldervale",
+    "modName": "ELDERVALE",
+    "version": "1.0.0",
+    "author": "MCreator",
+    "websiteURL": "https://mcreator.net",
+    "license": "Not specified",
+    "serverSideOnly": false,
+    "requiredMods": [],
+    "dependencies": [],
+    "dependants": [],
+    "mcreatorDependencies": [
+      "curios_api",
+      "geckolib",
+      "ldlib2"
+    ],
+    "currentGenerator": "neoforge-1.21.1",
+    "credits": "Created using mod maker MCreator - https://mcreator.net/about",
+    "modElementsPackage": "net.mcreator.eldervale"
+  },
+  "mcreatorVersion": 202600233518
+}

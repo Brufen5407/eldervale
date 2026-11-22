@@ -24,6 +24,18 @@ public class Skill1returniconProcedure {
 		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("assassin")) {
 			skill1_image = "assassin_skill1.png";
 		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("werewolf")) {
+			skill1_image = "werewolfskill1.png";
+		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("alchemist")) {
+			skill1_image = "alchemistskill1.png";
+		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("spellblade")) {
+			skill1_image = "spellbladeskill1.png";
+		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("mage")) {
+			skill1_image = "mageskill1.png";
+		}
 		return skill1_image;
 	}
 }

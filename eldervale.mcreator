@@ -1,33 +1,6 @@
 {
   "mod_elements": [
     {
-      "name": "XpLevel",
-      "type": "procedure",
-      "compiles": true,
-      "locked_code": false,
-      "registry_name": "xp_level",
-      "metadata": {
-        "dependencies": [
-          {
-            "name": "damagesource",
-            "type": "damagesource"
-          },
-          {
-            "name": "entity",
-            "type": "entity"
-          },
-          {
-            "name": "sourceentity",
-            "type": "entity"
-          }
-        ],
-        "files": [
-          "src/main/java/net/mcreator/eldervale/procedures/XpLevelProcedure.java"
-        ]
-      },
-      "path": "~/XP - LEVEL "
-    },
-    {
       "name": "Attribute",
       "type": "procedure",
       "compiles": true,
@@ -175,25 +148,6 @@
         ]
       },
       "path": "~/classes/gui/display"
-    },
-    {
-      "name": "Paladinstat",
-      "type": "procedure",
-      "compiles": true,
-      "locked_code": false,
-      "registry_name": "paladinstat",
-      "metadata": {
-        "dependencies": [
-          {
-            "name": "entity",
-            "type": "entity"
-          }
-        ],
-        "files": [
-          "src/main/java/net/mcreator/eldervale/procedures/PaladinstatProcedure.java"
-        ]
-      },
-      "path": "~/classes/Paladin"
     },
     {
       "name": "Shieldsrendering",
@@ -473,44 +427,6 @@
       "path": "~/classes/skills_if/skill1"
     },
     {
-      "name": "Mobattribute",
-      "type": "procedure",
-      "compiles": true,
-      "locked_code": false,
-      "registry_name": "mobattribute",
-      "metadata": {
-        "dependencies": [
-          {
-            "name": "entity",
-            "type": "entity"
-          }
-        ],
-        "files": [
-          "src/main/java/net/mcreator/eldervale/procedures/MobattributeProcedure.java"
-        ]
-      },
-      "path": "~/XP - LEVEL "
-    },
-    {
-      "name": "BerserkerStat",
-      "type": "procedure",
-      "compiles": true,
-      "locked_code": false,
-      "registry_name": "berserker_stat",
-      "metadata": {
-        "dependencies": [
-          {
-            "name": "entity",
-            "type": "entity"
-          }
-        ],
-        "files": [
-          "src/main/java/net/mcreator/eldervale/procedures/BerserkerStatProcedure.java"
-        ]
-      },
-      "path": "~/classes/berserker"
-    },
-    {
       "name": "Classselector",
       "type": "item",
       "compiles": true,
@@ -615,25 +531,6 @@
         ]
       },
       "path": "~/classes/berserker/skill"
-    },
-    {
-      "name": "Rangerstat",
-      "type": "procedure",
-      "compiles": true,
-      "locked_code": false,
-      "registry_name": "rangerstat",
-      "metadata": {
-        "dependencies": [
-          {
-            "name": "entity",
-            "type": "entity"
-          }
-        ],
-        "files": [
-          "src/main/java/net/mcreator/eldervale/procedures/RangerstatProcedure.java"
-        ]
-      },
-      "path": "~/classes/ranger"
     },
     {
       "name": "ManichinoRanger",
@@ -776,25 +673,6 @@
       "path": "~/classes/ranger/skill"
     },
     {
-      "name": "MonkStat",
-      "type": "procedure",
-      "compiles": true,
-      "locked_code": false,
-      "registry_name": "monk_stat",
-      "metadata": {
-        "dependencies": [
-          {
-            "name": "entity",
-            "type": "entity"
-          }
-        ],
-        "files": [
-          "src/main/java/net/mcreator/eldervale/procedures/MonkStatProcedure.java"
-        ]
-      },
-      "path": "~/classes/monk"
-    },
-    {
       "name": "Monkskill2",
       "type": "procedure",
       "compiles": true,
@@ -831,25 +709,6 @@
         ]
       },
       "path": "~/classes/monk/skill"
-    },
-    {
-      "name": "Assassinstat",
-      "type": "procedure",
-      "compiles": true,
-      "locked_code": false,
-      "registry_name": "assassinstat",
-      "metadata": {
-        "dependencies": [
-          {
-            "name": "entity",
-            "type": "entity"
-          }
-        ],
-        "files": [
-          "src/main/java/net/mcreator/eldervale/procedures/AssassinstatProcedure.java"
-        ]
-      },
-      "path": "~/classes/assassin "
     },
     {
       "name": "AssassinSkill1",
@@ -890,11 +749,24 @@
       "path": "~/classes/assassin /skill"
     },
     {
-      "name": "WerewolfStat",
+      "name": "CritHandler",
+      "type": "code",
+      "compiles": true,
+      "locked_code": true,
+      "registry_name": "crit_handler",
+      "metadata": {
+        "files": [
+          "src/main/java/net/mcreator/eldervale/CritHandler.java"
+        ]
+      },
+      "path": "~/player"
+    },
+    {
+      "name": "WerewolfSkill2",
       "type": "procedure",
       "compiles": true,
       "locked_code": false,
-      "registry_name": "werewolf_stat",
+      "registry_name": "werewolf_skill_2",
       "metadata": {
         "dependencies": [
           {
@@ -903,10 +775,143 @@
           }
         ],
         "files": [
-          "src/main/java/net/mcreator/eldervale/procedures/WerewolfStatProcedure.java"
+          "src/main/java/net/mcreator/eldervale/procedures/WerewolfSkill2Procedure.java"
         ]
       },
-      "path": "~/classes/werewolf"
+      "path": "~/classes/werewolf/skills"
+    },
+    {
+      "name": "WerewolfSkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "werewolf_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/WerewolfSkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/werewolf/skills"
+    },
+    {
+      "name": "AlchemistSkill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "alchemist_skill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/AlchemistSkill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/alchemist"
+    },
+    {
+      "name": "AlchemistSkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "alchemist_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/AlchemistSkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/alchemist"
+    },
+    {
+      "name": "SpellbladeSkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "spellblade_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/SpellbladeSkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/spellblade"
+    },
+    {
+      "name": "SpellbladeSkill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "spellblade_skill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/SpellbladeSkill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/spellblade"
+    },
+    {
+      "name": "MageSkill2",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "mage_skill_2",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/MageSkill2Procedure.java"
+        ]
+      },
+      "path": "~/classes/mage"
+    },
+    {
+      "name": "MageSkill1",
+      "type": "procedure",
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "mage_skill_1",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "entity",
+            "type": "entity"
+          }
+        ],
+        "files": [
+          "src/main/java/net/mcreator/eldervale/procedures/MageSkill1Procedure.java"
+        ]
+      },
+      "path": "~/classes/mage"
     }
   ],
   "variable_elements": [
@@ -1185,10 +1190,6 @@
     "name": "~",
     "children": [
       {
-        "name": "XP - LEVEL ",
-        "children": []
-      },
-      {
         "name": "player",
         "children": []
       },
@@ -1304,6 +1305,18 @@
                 ]
               }
             ]
+          },
+          {
+            "name": "alchemist",
+            "children": []
+          },
+          {
+            "name": "spellblade",
+            "children": []
+          },
+          {
+            "name": "mage",
+            "children": []
           }
         ]
       }

@@ -1,30 +1,3 @@
-/summon minecraft:zoglin
-/gamemode survival
-/gamemode creative
-/time set day
-/give @a eldervale:classselector
-/effect give @a minecraft:regeneration
-/effect give @a minecraft:regeneration 5 100
-/summon minecraft:husk
-/give @a eldervale:classselector
-/gamemode survival
-/summon minecraft:husk
-/gamemode creative
-/give @a eldervale:classselector
-/summon minecraft:zombie
-/gamemode survival
-/summon minecraft:zoglin
-/time set day
-/kill @e
-/gamemode creative
-/place template ldlib2:empty
-/fill ~ ~ ~ ~ ~ ~ minecraft:cobbled_deepslate
-/fill -8 -28 13
-/fill -8 -28 13 ~ ~ ~ minecraft:cobbled_deepslate
-/summon minecraft:husk
-/gamerule keepInventory true
-/summon minecraft:husk
-/gamemode spectator
 /gamemode survival
 /summon minecraft:husk
 /give @a eldervale:classselector
@@ -48,3 +21,30 @@
 /gamemode survival
 /summon minecraft:husk
 /summon minecraft:warden
+/gamemode creative
+/time set day
+/kill @e
+/estats show
+/estats points 10
+/estats spend hp 10
+/estats spend vitality 10
+/estats show
+/estats points 1000
+/estats spend dexterity 100
+/estats show
+/summon minecraft:zoglin
+/summon minecraft:zombie
+/summon minecraft:husk
+/estats reset
+/summon minecraft:husk
+/summon minecraft:iron_golem
+/give Dev eldervale:classselector
+/summon minecraft:husk
+/summon minecraft:wolf
+/summon minecraft:skeleton
+/summon minecraft:husk
+/summon minecraft:huskù
+/summon minecraft:husk
+/estats show
+/summon minecraft:husk
+/summon minecraft:witch

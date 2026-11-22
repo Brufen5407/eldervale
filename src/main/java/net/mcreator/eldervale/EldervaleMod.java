@@ -48,6 +48,7 @@ public class EldervaleMod {
 
 	public EldervaleMod(IEventBus modEventBus) {
 		// Start of user code block mod constructor
+		net.mcreator.eldervale.stats.StatsAttachments.ATTACHMENT_TYPES.register(modEventBus);
 		// End of user code block mod constructor
 		NeoForge.EVENT_BUS.register(this);
 		modEventBus.addListener(this::registerNetworking);
