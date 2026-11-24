@@ -34,9 +34,12 @@ import net.mcreator.eldervale.procedures.MobScalingProcedure;
 /**
  * Handles XP gain and level-up. Replaces XpLevelProcedure (deleted from MCreator).
  *
- * Singleplayer: full XP to the killer.
- * Party: XP split equally among members within PARTY_SHARE_RANGE blocks in the same dimension.
- * No stat bonuses for mob in party: mob level and stats are always fixed on spawn.
+ * XP of a kill, step by step (all numbers in ProgressionConfig):
+ *   1. base XP of the mob        = XP_BASE + XP_PER_MOB_LEVEL * mobLevel
+ *   2. group total (Party)       = base * (1 + PARTY_BONUS_PER_EXTRA_MEMBER * (members in range - 1))
+ *   3. share per member          = group total / members in range (killer alone = full XP)
+ *   4. level-difference multiplier, calculated for EACH member with his own level (anti-farming)
+ *   5. final XP                  = round(share * multiplier), at least 1
  */
 @EventBusSubscriber
 public final class ProgressionHandler {
@@ -55,9 +58,27 @@ public final class ProgressionHandler {
         return Math.round(kills * perKill);
     }
 
-    /** Raw XP value of one kill at the given mob level. */
+    /** Raw XP value of one kill at the given mob level (before party bonus and level difference). */
     public static double xpOfKill(int mobLevel) {
         return ProgressionConfig.XP_BASE + ProgressionConfig.XP_PER_MOB_LEVEL * mobLevel;
+    }
+
+    /**
+     * Anti-farming / bravery multiplier.
+     * Mob up to LOWER_FREE_LEVELS below the player: 1.0, then -LOWER_PENALTY_PER_LEVEL per extra level (min MIN_XP_MULTIPLIER).
+     * Mob up to HIGHER_FREE_LEVELS above the player: 1.0, then +HIGHER_BONUS_PER_LEVEL per extra level (max +MAX_XP_BONUS).
+     */
+    public static double levelDifferenceMultiplier(int playerLevel, int mobLevel) {
+        int diff = mobLevel - playerLevel;
+        if (diff < -ProgressionConfig.LOWER_FREE_LEVELS) {
+            int extra = -diff - ProgressionConfig.LOWER_FREE_LEVELS;
+            return Math.max(ProgressionConfig.MIN_XP_MULTIPLIER, 1.0 - ProgressionConfig.LOWER_PENALTY_PER_LEVEL * extra);
+        }
+        if (diff > ProgressionConfig.HIGHER_FREE_LEVELS) {
+            int extra = diff - ProgressionConfig.HIGHER_FREE_LEVELS;
+            return 1.0 + Math.min(ProgressionConfig.MAX_XP_BONUS, ProgressionConfig.HIGHER_BONUS_PER_LEVEL * extra);
+        }
+        return 1.0;
     }
 
     // ---------------------------------------------------------------
@@ -74,25 +95,29 @@ public final class ProgressionHandler {
         int mobLevel = victim.getPersistentData().getInt(MobScalingProcedure.TAG_LEVEL);
         if (mobLevel <= 0) mobLevel = 1;
 
-        double totalXp = xpOfKill(mobLevel);
         double popupY = victim.getY() + victim.getBbHeight() + 0.2;
 
         List<ServerPlayer> group = collectGroup(killer);
-        // XP split equally, no bonus or penalty for party size
-        long share = Math.max(1L, Math.round(totalXp / group.size()));
+        // Party bonus: every extra member in range raises the group total, which is then split equally
+        double groupTotal = xpOfKill(mobLevel)
+                * (1.0 + ProgressionConfig.PARTY_BONUS_PER_EXTRA_MEMBER * (group.size() - 1));
+        double share = groupTotal / group.size();
 
         for (ServerPlayer player : group) {
             int playerLevel = Mth.clamp((int) Math.round(
                     player.getData(EldervaleModVariables.PLAYER_VARIABLES).LEVEL), 1, ProgressionConfig.MAX_LEVEL);
-            if (playerLevel < ProgressionConfig.MAX_LEVEL) {
-                grantXp(player, share, false);
-                if (ProgressionConfig.XP_POPUP)
-                    PacketDistributor.sendToPlayer(player,
-                            new PopupPayload(victim.getX(), popupY, victim.getZ(), PopupPayload.XP, (int) share));
-                if (ProgressionConfig.XP_SOUND)
-                    player.playNotifySound(SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS,
-                            0.25F, 0.8F + player.getRandom().nextFloat() * 0.5F);
-            }
+            if (playerLevel >= ProgressionConfig.MAX_LEVEL) continue;
+
+            // each member is judged with his own level
+            long xp = Math.max(1L, Math.round(share * levelDifferenceMultiplier(playerLevel, mobLevel)));
+
+            grantXp(player, xp, false);
+            if (ProgressionConfig.XP_POPUP)
+                PacketDistributor.sendToPlayer(player,
+                        new PopupPayload(victim.getX(), popupY, victim.getZ(), PopupPayload.XP, (int) xp));
+            if (ProgressionConfig.XP_SOUND)
+                player.playNotifySound(SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS,
+                        0.25F, 0.8F + player.getRandom().nextFloat() * 0.5F);
         }
     }
 

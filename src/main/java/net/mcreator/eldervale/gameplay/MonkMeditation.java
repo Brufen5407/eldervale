@@ -22,6 +22,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceLocation;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
 /**
  * Monk skill: MEDITATION.
@@ -33,17 +35,19 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
  * and the push goes away from the monk. The movement block is always removed at the end,
  * even if the monk dies or leaves the server.
  * Runs only on the server (no client classes), so it is safe on a dedicated server.
+ *
+ * VFX: the only additions are the VfxServer.send(...) calls (they only send a packet to the clients).
  */
 @EventBusSubscriber
 public class MonkMeditation {
 
 	// ---- Settings (edit here) ----
 	private static final int SKILL_SLOT = 2;               // 1 = SKILL1 (key V), 2 = SKILL2 (key B)
-	private static final int PULSES = 10;                  
+	private static final int PULSES = 10;
 	private static final int PULSE_INTERVAL = 10;          // ticks between pulses (10 = 0.5 second)
 	private static final float HEAL_PER_PULSE = 2.0F;
 	private static final double PUSH_RADIUS = 5.0D;        // same area as the old procedure
-	private static final double PUSH_STRENGTH = 2.0D;      // horizontal push 
+	private static final double PUSH_STRENGTH = 2.0D;      // horizontal push
 	private static final double PUSH_UP = 0.35D;
 	private static final boolean FREEZE_MOVEMENT = true;
 
@@ -73,8 +77,10 @@ public class MonkMeditation {
 			}
 			int e = elapsed + 1;
 			ACTIVE.put(id, e);
-			if (e % PULSE_INTERVAL == 0)
+			if (e % PULSE_INTERVAL == 0) {
 				pulse(player);
+				VfxServer.send(player, VfxIds.MONK_MEDITATION, VfxIds.PULSE, e / PULSE_INTERVAL - 1, 0.0F);
+			}
 			if (e >= PULSES * PULSE_INTERVAL)
 				end(player);
 			return;
@@ -84,6 +90,7 @@ public class MonkMeditation {
 		if (prev != null && monk && player.isAlive() && cd - prev > 50.0D && cd >= max - 10.0D) {
 			ACTIVE.put(id, 0);
 			setFreeze(player, true);
+			VfxServer.send(player, VfxIds.MONK_MEDITATION, VfxIds.START, PULSES * PULSE_INTERVAL, (float) PUSH_RADIUS);
 		}
 	}
 
@@ -113,7 +120,8 @@ public class MonkMeditation {
 
 	private static void end(ServerPlayer player) {
 		setFreeze(player, false);
-		ACTIVE.remove(player.getUUID());
+		if (ACTIVE.remove(player.getUUID()) != null)
+			VfxServer.send(player, VfxIds.MONK_MEDITATION, VfxIds.END, 0, 0.0F);
 	}
 
 	private static void setFreeze(ServerPlayer player, boolean on) {

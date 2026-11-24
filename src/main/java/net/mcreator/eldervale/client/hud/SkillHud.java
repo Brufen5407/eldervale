@@ -1,5 +1,6 @@
 package net.mcreator.eldervale.client.hud;
 
+import java.util.Map;
 import java.util.Locale;
 
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
@@ -36,9 +37,6 @@ public class SkillHud {
 	private static final int SLOT_X2 = 75;       // x of the second slot
 	private static final int BOTTOM_OFFSET = 46; // y = screen height - this
 
-	// How long the "active" glow lasts after casting (paladin: shield 5s, zone buff 5s)
-	private static final float ACTIVE_SECONDS = 5.0F;
-
 	// ---- Colors 0xAARRGGBB ----
 	private static final int FRAME_DARK = 0xFF0B0810;
 	private static final int GOLD_LIGHT = 0xFFF2D27A;
@@ -59,6 +57,25 @@ public class SkillHud {
 	private static final Slot S1 = new Slot();
 	private static final Slot S2 = new Slot();
 
+	// cost = mana cost (-1 = unknown), active = seconds of the timer bar above the slot (0 = no bar)
+	private record SkillInfo(int cost, float active) {
+	}
+
+	private static final SkillInfo NONE = new SkillInfo(-1, 0F);
+
+	// {skill 1, skill 2} per class. Costs match the skill procedures; durations come from the class sheet.
+	// If a cost or duration changes in a procedure, update it here too.
+	private static final Map<String, SkillInfo[]> SKILLS = Map.of(
+			"paladin", new SkillInfo[]{new SkillInfo(50, 5F), new SkillInfo(30, 5F)},
+			"berserker", new SkillInfo[]{new SkillInfo(30, 0F), new SkillInfo(20, 0F)},
+			"ranger", new SkillInfo[]{new SkillInfo(35, 5F), new SkillInfo(40, 0F)},
+			"monk", new SkillInfo[]{new SkillInfo(25, 0F), new SkillInfo(35, 5F)},
+			"assassin", new SkillInfo[]{new SkillInfo(25, 0F), new SkillInfo(30, 5F)},
+			"werewolf", new SkillInfo[]{new SkillInfo(30, 8F), new SkillInfo(20, 0F)},
+			"alchemist", new SkillInfo[]{new SkillInfo(35, 4F), new SkillInfo(30, 3F)},
+			"spellblade", new SkillInfo[]{new SkillInfo(25, 0F), new SkillInfo(40, 0F)},
+			"mage", new SkillInfo[]{new SkillInfo(40, 0F), new SkillInfo(65, 0F)});
+
 	@SubscribeEvent
 	public static void onRenderGui(RenderGuiEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
@@ -72,8 +89,9 @@ public class SkillHud {
 		long now = System.nanoTime();
 
 		String cls = v.PLAYER_CLASS;
-		boolean paladin = "paladin".equals(cls);
-		int[] cost = costs(cls);
+		SkillInfo[] info = cls == null ? null : SKILLS.get(cls);
+		SkillInfo i1 = info != null ? info[0] : NONE;
+		SkillInfo i2 = info != null ? info[1] : NONE;
 
 		ResourceLocation icon1 = iconTexture(java.util.Objects.toString(Skill1returniconProcedure.execute(player), ""), "paladin_skill1.png");
 		ResourceLocation icon2 = iconTexture(java.util.Objects.toString(Skill2returniconProcedure.execute(player), ""), "paladin_skill2.png");
@@ -82,25 +100,16 @@ public class SkillHud {
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 
-		drawSlot(g, S1, SLOT_X1, y, v.SKILL1_CD, v.SKILL1_MAX_CD, icon1, KEY_1, cost == null ? -1 : cost[0], v.MANA, paladin, paladin && v.paladin_shields, now);
-		drawSlot(g, S2, SLOT_X2, y, v.SKILL2_CD, v.SKILL2_MAX_CD, icon2, KEY_2, cost == null ? -1 : cost[1], v.MANA, paladin, true, now);
+		// Paladin skill 1 keeps its real shield state as gate for the timer bar
+		drawSlot(g, S1, SLOT_X1, y, v.SKILL1_CD, v.SKILL1_MAX_CD, icon1, KEY_1, i1, v.MANA, !"paladin".equals(cls) || v.paladin_shields, now);
+		drawSlot(g, S2, SLOT_X2, y, v.SKILL2_CD, v.SKILL2_MAX_CD, icon2, KEY_2, i2, v.MANA, true, now);
 
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 	}
 
-	// Mana costs per class (from your class sheet). Paladin is confirmed in the procedures.
-	private static int[] costs(String cls) {
-		if (cls == null)
-			return null;
-		return switch (cls) {
-			case "paladin" -> new int[]{50, 30};
-			case "berserker" -> new int[]{30, 20};
-			case "ranger" -> new int[]{35, 40};
-			default -> null;
-		};
-	}
+	private static void drawSlot(GuiGraphics g, Slot st, int x, int y, double cd, double maxCd, ResourceLocation icon, String key, SkillInfo info, double mana, boolean activeGate, long now) {
+		int cost = info.cost();
 
-	private static void drawSlot(GuiGraphics g, Slot st, int x, int y, double cd, double maxCd, ResourceLocation icon, String key, int cost, double mana, boolean trackActive, boolean activeGate, long now) {
 		// ---- detect events ----
 		if (st.prevCd < 0)
 			st.prevCd = cd;
@@ -122,7 +131,7 @@ public class SkillHud {
 		double progress = onCd && max > 0 ? 1.0 - Math.min(1.0, cd / max) : 1.0;
 
 		double sinceCast = st.castStart == 0 ? 999.0 : (now - st.castStart) / 1.0E9;
-		boolean active = trackActive && activeGate && sinceCast < ACTIVE_SECONDS;
+		boolean active = info.active() > 0 && activeGate && sinceCast < info.active();
 
 		// ---- glow when active ----
 		if (active) {
@@ -138,8 +147,8 @@ public class SkillHud {
 		RenderSystem.defaultBlendFunc();
 		g.blit(icon, x + 3, y + 3, 0, 0, 26, 26, 26, 26);
 
-		// ---- not enough mana ----
-		boolean noMana = !onCd && cost > 0 && mana <= cost;
+		// ---- not enough mana (casting is allowed when mana >= cost) ----
+		boolean noMana = !onCd && cost > 0 && mana < cost;
 		if (noMana)
 			g.fill(x + 3, y + 3, x + 29, y + 29, 0x99102050);
 
@@ -162,7 +171,7 @@ public class SkillHud {
 
 		// ---- active timer bar above the slot ----
 		if (active) {
-			double rem = 1.0 - sinceCast / ACTIVE_SECONDS;
+			double rem = 1.0 - sinceCast / info.active();
 			int bw = (int) Math.round(26 * Math.max(0.0, Math.min(1.0, rem)));
 			g.fill(x + 2, y - 7, x + 30, y - 3, FRAME_DARK);
 			g.fill(x + 3, y - 6, x + 29, y - 4, 0xFF1B1620);

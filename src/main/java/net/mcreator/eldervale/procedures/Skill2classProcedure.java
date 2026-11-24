@@ -24,5 +24,17 @@ public class Skill2classProcedure {
 		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("assassin")) {
 			AssassinSkill2Procedure.execute(entity);
 		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("werewolf")) {
+			WerewolfSkill2Procedure.execute(entity);
+		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("alchemist")) {
+			AlchemistSkill2Procedure.execute(entity);
+		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("spellblade")) {
+			SpellbladeSkill2Procedure.execute(entity);
+		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("mage")) {
+			MageSkill2Procedure.execute(entity);
+		}
 	}
 }

@@ -24,5 +24,17 @@ public class KeySkill1Procedure {
 		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("assassin")) {
 			AssassinSkill1Procedure.execute(entity);
 		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("werewolf")) {
+			WerewolfSkill1Procedure.execute(entity);
+		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("alchemist")) {
+			AlchemistSkill1Procedure.execute(entity);
+		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("spellblade")) {
+			SpellbladeSkill1Procedure.execute(entity);
+		}
+		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("mage")) {
+			MageSkill1Procedure.execute(entity);
+		}
 	}
 }

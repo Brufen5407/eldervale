@@ -23,6 +23,8 @@ import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.mcreator.eldervale.progression.ClientMobLevels;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -56,11 +58,13 @@ public class MobLabelRenderer {
 			return;
 		Entity cam = event.getCamera().getEntity();
 
-		// 1) raccolgo solo i mob abbastanza vicini
+		// 1) raccolgo solo i mob abbastanza vicini che hanno un livello (ricevuto dal server)
 		double maxSqr = LABEL_DISTANCE * LABEL_DISTANCE;
 		List<LivingEntity> near = new ArrayList<>();
 		for (Entity e : level.entitiesForRendering()) {
 			if (!(e instanceof Monster) || !(e instanceof LivingEntity living) || !e.isAlive())
+				continue;
+			if (ClientMobLevels.get(e.getId()) <= 0)
 				continue;
 			if (e.distanceToSqr(cam) > maxSqr)
 				continue;
@@ -97,7 +101,7 @@ public class MobLabelRenderer {
 		Vec3 cam = event.getCamera().getPosition();
 		PoseStack pose = event.getPoseStack();
 
-		int lvl = (int) mob.getPersistentData().getDouble("mob level");
+		int lvl = ClientMobLevels.get(mob.getId());
 
 		MutableComponent title = Component.literal(lvl + " ").withStyle(Style.EMPTY.withColor(LEVEL_COLOR))
 				.append(mob.getName().copy().withStyle(Style.EMPTY.withColor(NAME_COLOR)));

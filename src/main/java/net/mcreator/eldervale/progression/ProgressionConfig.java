@@ -7,14 +7,17 @@ package net.mcreator.eldervale.progression;
  *
  * XP TO GO FROM LEVEL n TO n+1:
  *     (KILLS_BASE + KILLS_GROWTH * n^2) * (XP_BASE + XP_PER_MOB_LEVEL * n)
- *   = "kills needed at level n" * "XP of a mob of level n"
  *
  * XP OF A KILL (mob level L):  XP_BASE + XP_PER_MOB_LEVEL * L
- *   then * level-difference multiplier * party share.
  *
- * MOB LEVEL = zone level (distance from the world spawn / world origin, per dimension) +-MOB_LEVEL_VARIANCE.
- * MOB STATS: HP = MOB_HP_BASE + MOB_HP_PER_LEVEL * L,  ATT = MOB_ATT_BASE + MOB_ATT_PER_LEVEL * L.
- * Re-tune the mob HP / ATT together with the weapons when custom equipment arrives.
+ * MOB LEVEL = zone level (Overworld: table of distances from spawn; Nether/End: from the origin) +-MOB_LEVEL_VARIANCE, max MAX_LEVEL.
+ *
+ * MOB STATS (MobScalingProcedure) grow in PERCENT over the vanilla value, so a Zombie stays weaker than a
+ * Vindicator at the same level:
+ *     HP     = vanillaHP    * (1 + MOB_HP_PCT_PER_LEVEL    * (L - 1))
+ *     DAMAGE = every hit    * (1 + MOB_ATT_PCT_PER_LEVEL   * (L - 1))   (melee, arrows, explosions...)
+ *     ARMOR  = vanillaArmor +  MOB_ARMOR_PER_LEVEL * (L - 1), capped
+ *     SPEED  = vanillaSpeed * (1 + MOB_SPEED_PCT_PER_LEVEL * (L - 1))
  */
 public final class ProgressionConfig {
 	private ProgressionConfig() {
@@ -47,19 +50,26 @@ public final class ProgressionConfig {
 	public static final double PARTY_BONUS_PER_EXTRA_MEMBER = 0.10;
 
 	// ---- Mob stats ----
-	public static final double MOB_HP_BASE = 20.0;
-	public static final double MOB_HP_PER_LEVEL = 1.5;
-	public static final double MOB_ATT_BASE = 3.0;
-	public static final double MOB_ATT_PER_LEVEL = 0.07;
-	/** Random spread of the level around the zone level (0.15 = +-15 %). */
-	public static final double MOB_LEVEL_VARIANCE = 0.15;
-	/** Monsters with more vanilla HP than this (Wither, Warden...) are bosses: not scaled for now. */
-	public static final double SKIP_SCALING_ABOVE_HEALTH = 60.0;
+	public static final double MOB_HP_PCT_PER_LEVEL = 0.06;
+	public static final double MOB_ATT_PCT_PER_LEVEL = 0.03;
+	public static final double MOB_ARMOR_PER_LEVEL = 0.15;
+	public static final double MOB_ARMOR_CAP = 20.0;
+	public static final double MOB_SPEED_PCT_PER_LEVEL = 0.003;
+	/** Random spread of the level around the zone level (0.05 = +-5 %). */
+	public static final double MOB_LEVEL_VARIANCE = 0.05;
+	/**
+	 * Monsters with more vanilla HP than this (Wither, Warden...) are bosses: they get a level
+	 * (so they give XP and show a label) but their stats are NOT scaled.
+	 */
+	public static final double SKIP_SCALING_ABOVE_HEALTH = 150.0;
 
-	// ---- Zones: level = base + distance / blocksPerLevel, capped ----
-	public static final double OVERWORLD_BASE = 1.0;
-	public static final double OVERWORLD_BLOCKS_PER_LEVEL = 50.0;
-	public static final double OVERWORLD_CAP = 60.0;
+	// ---- Overworld zones: level by distance from the world spawn (linear between the points) ----
+	// 0-1000: 1-15 | 1000-1500: 15-30 | 1500-2000: 30-45 | 2000-2500: 45-60
+	// 2500-3000: 60-70 | 3000-3500: 70-80 | 3500-4000: 80-90 | 4000-4500: 90-100 (then 100)
+	public static final double[] OVERWORLD_DISTANCES = { 0, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500 };
+	public static final double[] OVERWORLD_LEVELS = { 1, 15, 30, 45, 60, 70, 80, 90, 100 };
+
+	// ---- Nether / End: level = base + distance from the origin / blocksPerLevel, capped ----
 	public static final double NETHER_BASE = 35.0;
 	public static final double NETHER_BLOCKS_PER_LEVEL = 15.0;
 	public static final double NETHER_CAP = 85.0;

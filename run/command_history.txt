@@ -1,24 +1,3 @@
-/gamemode creative
-/1236547897
-/eteam disband
-/eteam leader
-/eteam create Brufen
-/eteam info
-/eteam kick Brufen
-/eteam kick Dev
-/eteam disband
-/gamemode survival
-/summon minecraft:husk
-/summon minecraft:warden
-/gamemode creative
-/time set day
-/kill @e
-/estats show
-/estats points 10
-/estats spend hp 10
-/estats spend vitality 10
-/estats show
-/estats points 1000
 /estats spend dexterity 100
 /estats show
 /summon minecraft:zoglin
@@ -48,3 +27,24 @@
 /summon minecraft:zombie
 /data get entity @e[type=minecraft:zombie,limit=1] PersistentData
 /summon minecraft:zombie
+/summon minecraft:husk
+/give Dev eldervale:classselector
+/summon minecraft:husk
+/give Dev minecraft:diamond_sword
+/gamemode survival
+/summon minecraft:husk
+/gamemode creative
+/summon minecraft:husk
+/give Dev eldervale:classselector
+/summon minecraft:husk
+/gamemode survival
+/gamemode creative
+/gamemode survival
+/summon minecraft:husk
+/gamemode creative
+/estats points 100
+/summon minecraft:husk
+/give @a eldervale:classselector
+/summon minecraft:husk
+/time set day
+/summon minecraft:husk
