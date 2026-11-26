@@ -15,13 +15,12 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.util.Mth;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.core.particles.ParticleTypes;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
 /**
  * Werewolf skill 2: FERAL POUNCE.
@@ -33,6 +32,8 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
  * Mana (20) and cooldown (200 ticks = 10 s) stay in the MCreator procedure WerewolfSkill2.
  * This class detects the cast on the server (the SKILL2 cooldown jumps up), the same pattern used
  * by AssassinShadowStrike / MonkPunchBarrage. Server only (no client classes): safe on a dedicated server.
+ * Gameplay unchanged: the old vanilla sounds and particles are replaced by VFX events
+ * (START at the launch, IMPACT at the landing).
  */
 @EventBusSubscriber
 public class WerewolfFeralPounce {
@@ -115,8 +116,8 @@ public class WerewolfFeralPounce {
 		player.setDeltaMovement(dir.x * speed, LAUNCH_UP, dir.z * speed);
 		player.hurtMarked = true; // send the new motion to the client
 
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.WOLF_GROWL, SoundSource.PLAYERS, 1.2F, 0.8F);
-		level.sendParticles(ParticleTypes.POOF, player.getX(), player.getY() + 0.2D, player.getZ(), 15, 0.3D, 0.1D, 0.3D, 0.05D);
+		// VFX: the launch (position, direction of the leap)
+		VfxServer.sendAt(player, VfxIds.WEREWOLF_POUNCE, VfxIds.START, 0, player.getX(), player.getY(), player.getZ(), (float) RADIUS, dir.x, 0.0D, dir.z);
 		return true;
 	}
 
@@ -132,9 +133,7 @@ public class WerewolfFeralPounce {
 			m.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, SLOW_TICKS, SLOW_AMPLIFIER));
 		}
 
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 1.5F, 0.7F);
-		level.sendParticles(ParticleTypes.CRIT, player.getX(), player.getY() + 0.2D, player.getZ(), 30, 1.2D, 0.2D, 1.2D, 0.2D);
-		level.sendParticles(ParticleTypes.POOF, player.getX(), player.getY() + 0.1D, player.getZ(), 20, 1.0D, 0.1D, 1.0D, 0.05D);
+		VfxServer.sendAt(player, VfxIds.WEREWOLF_POUNCE, VfxIds.IMPACT, 0, player.getX(), player.getY(), player.getZ(), (float) RADIUS);
 	}
 
 	private static void refund(EldervaleModVariables.PlayerVariables v) {

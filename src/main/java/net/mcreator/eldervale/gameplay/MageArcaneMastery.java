@@ -20,6 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
  *
  * State only, no events besides cleanup: MageSkills calls onCast() and multiplier().
  * Runs only on the server (no client classes), so it is safe on a dedicated server.
+ * onCast() now returns the number of active stacks (used by the VFX).
  */
 @EventBusSubscriber
 public class MageArcaneMastery {
@@ -36,14 +37,15 @@ public class MageArcaneMastery {
 
 	private static final Map<UUID, State> STATES = new HashMap<>();
 
-	/** call once per skill cast */
-	static void onCast(ServerPlayer player) {
+	/** call once per skill cast; returns the active stacks after this cast */
+	static int onCast(ServerPlayer player) {
 		long now = player.level().getGameTime();
 		State s = STATES.computeIfAbsent(player.getUUID(), k -> new State());
 		if (now >= s.expires)
 			s.stacks = 0;
 		s.stacks = Math.min(MAX_STACKS, s.stacks + 1);
 		s.expires = now + DURATION_TICKS;
+		return s.stacks;
 	}
 
 	/** damage multiplier (1.0 when no stacks are active) */

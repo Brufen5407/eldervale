@@ -1,0 +1,506 @@
+{
+  "alchemist_brew_burst": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:alchemist_brew_burst",
+        "stream": false
+      }
+    ]
+  },
+  "alchemist_brew_end": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:alchemist_brew_end",
+        "stream": false
+      }
+    ]
+  },
+  "alchemist_brew_loop": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:alchemist_brew_loop",
+        "stream": false
+      }
+    ]
+  },
+  "alchemist_compound_explode": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:alchemist_compound_explode",
+        "stream": false
+      }
+    ]
+  },
+  "alchemist_compound_stick": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:alchemist_compound_stick",
+        "stream": false
+      }
+    ]
+  },
+  "alchemist_compound_throw": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:alchemist_compound_throw",
+        "stream": false
+      }
+    ]
+  },
+  "alchemist_compound_tick": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:alchemist_compound_tick",
+        "stream": false
+      }
+    ]
+  },
+  "alchemist_contam_burst": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:alchemist_contam_burst",
+        "stream": false
+      }
+    ]
+  },
+  "alchemist_stack": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:alchemist_stack",
+        "stream": false
+      }
+    ]
+  },
+  "alchemist_throw": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:alchemist_throw",
+        "stream": false
+      }
+    ]
+  },
+  "assassin_ambush": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:assassin_ambush",
+        "stream": false
+      }
+    ]
+  },
+  "assassin_smoke_cast": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:assassin_smoke_cast",
+        "stream": false
+      }
+    ]
+  },
+  "assassin_smoke_end": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:assassin_smoke_end",
+        "stream": false
+      }
+    ]
+  },
+  "assassin_smoke_loop": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:assassin_smoke_loop",
+        "stream": false
+      }
+    ]
+  },
+  "assassin_strike_crit": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:assassin_strike_crit",
+        "stream": false
+      }
+    ]
+  },
+  "assassin_strike_dash": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:assassin_strike_dash",
+        "stream": false
+      }
+    ]
+  },
+  "assassin_strike_hit": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:assassin_strike_hit",
+        "stream": false
+      }
+    ]
+  },
+  "berserker_charge": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:berserker_charge",
+        "stream": false
+      }
+    ]
+  },
+  "berserker_charge_hit": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:berserker_charge_hit",
+        "stream": false
+      }
+    ]
+  },
+  "berserker_heartbeat": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:berserker_heartbeat",
+        "stream": false
+      }
+    ]
+  },
+  "berserker_mode_off": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:berserker_mode_off",
+        "stream": false
+      }
+    ]
+  },
+  "berserker_mode_on": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:berserker_mode_on",
+        "stream": false
+      }
+    ]
+  },
+  "berserker_slam_impact": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:berserker_slam_impact",
+        "stream": false
+      }
+    ]
+  },
+  "berserker_slam_jump": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:berserker_slam_jump",
+        "stream": false
+      }
+    ]
+  },
+  "berserker_splash": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:berserker_splash",
+        "stream": false
+      }
+    ]
+  },
+  "mage_meteor_cast": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:mage_meteor_cast",
+        "stream": false
+      }
+    ]
+  },
+  "mage_meteor_fall": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:mage_meteor_fall",
+        "stream": false
+      }
+    ]
+  },
+  "mage_meteor_impact": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:mage_meteor_impact",
+        "stream": false
+      }
+    ]
+  },
+  "mage_nova_cast": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:mage_nova_cast",
+        "stream": false
+      }
+    ]
+  },
+  "mage_stack": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:mage_stack",
+        "stream": false
+      }
+    ]
+  },
+  "monk_barrage_end": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:monk_barrage_end",
+        "stream": false
+      }
+    ]
+  },
+  "monk_barrage_punch": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:monk_barrage_punch",
+        "stream": false
+      }
+    ]
+  },
+  "monk_barrage_start": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:monk_barrage_start",
+        "stream": false
+      }
+    ]
+  },
+  "monk_meditation_aura": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:monk_meditation_aura",
+        "stream": false
+      }
+    ]
+  },
+  "monk_meditation_end": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:monk_meditation_end",
+        "stream": false
+      }
+    ]
+  },
+  "monk_meditation_pulse_1": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:monk_meditation_pulse_1",
+        "stream": false
+      }
+    ]
+  },
+  "monk_meditation_pulse_2": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:monk_meditation_pulse_2",
+        "stream": false
+      }
+    ]
+  },
+  "monk_meditation_pulse_3": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:monk_meditation_pulse_3",
+        "stream": false
+      }
+    ]
+  },
+  "monk_meditation_start": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:monk_meditation_start",
+        "stream": false
+      }
+    ]
+  },
+  "paladin_shield_end": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:paladin_shield_end",
+        "stream": false
+      }
+    ]
+  },
+  "paladin_shield_hum": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:paladin_shield_hum",
+        "stream": false
+      }
+    ]
+  },
+  "paladin_shield_start": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:paladin_shield_start",
+        "stream": false
+      }
+    ]
+  },
+  "paladin_shield_warn": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:paladin_shield_warn",
+        "stream": false
+      }
+    ]
+  },
+  "paladin_zone_cast": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:paladin_zone_cast",
+        "stream": false
+      }
+    ]
+  },
+  "paladin_zone_end": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:paladin_zone_end",
+        "stream": false
+      }
+    ]
+  },
+  "paladin_zone_loop": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:paladin_zone_loop",
+        "stream": false
+      }
+    ]
+  },
+  "ranger_arrow_hit": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:ranger_arrow_hit",
+        "stream": false
+      }
+    ]
+  },
+  "ranger_arrow_shot": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:ranger_arrow_shot",
+        "stream": false
+      }
+    ]
+  },
+  "ranger_arrows_cast": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:ranger_arrows_cast",
+        "stream": false
+      }
+    ]
+  },
+  "ranger_decoy_cast": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:ranger_decoy_cast",
+        "stream": false
+      }
+    ]
+  },
+  "ranger_decoy_end": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:ranger_decoy_end",
+        "stream": false
+      }
+    ]
+  },
+  "ranger_decoy_pulse": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:ranger_decoy_pulse",
+        "stream": false
+      }
+    ]
+  },
+  "ranger_reflex": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:ranger_reflex",
+        "stream": false
+      }
+    ]
+  },
+  "spellblade_conversion": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:spellblade_conversion",
+        "stream": false
+      }
+    ]
+  },
+  "spellblade_phantom_cast": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:spellblade_phantom_cast",
+        "stream": false
+      }
+    ]
+  },
+  "spellblade_phantom_hit": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:spellblade_phantom_hit",
+        "stream": false
+      }
+    ]
+  },
+  "spellblade_slash": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:spellblade_slash",
+        "stream": false
+      }
+    ]
+  },
+  "spellblade_slash_hit": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:spellblade_slash_hit",
+        "stream": false
+      }
+    ]
+  },
+  "werewolf_instinct": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:werewolf_instinct",
+        "stream": false
+      }
+    ]
+  },
+  "werewolf_pounce_land": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:werewolf_pounce_land",
+        "stream": false
+      }
+    ]
+  },
+  "werewolf_pounce_launch": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:werewolf_pounce_launch",
+        "stream": false
+      }
+    ]
+  },
+  "werewolf_transform_off": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:werewolf_transform_off",
+        "stream": false
+      }
+    ]
+  },
+  "werewolf_transform_on": {
+    "sounds": [
+      {
+        "name": "eldervale_vfx:werewolf_transform_on",
+        "stream": false
+      }
+    ]
+  }
+}

@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.joml.Vector3f;
-
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
@@ -29,10 +27,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.DustParticleOptions;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
 /**
  * Monk skill: PUNCH BARRAGE.
@@ -46,12 +44,14 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
  * This class detects the cast on the server (the cooldown jumps up), and if there is
  * no valid target it gives the mana and the cooldown back.
  * Runs only on the server (no client classes), so it is safe on a dedicated server.
+ * Gameplay unchanged: the old particles and vanilla sounds are replaced by VFX events
+ * (START = the teleport, PULSE = each punch, END = the last punch).
  */
 @EventBusSubscriber
 public class MonkPunchBarrage {
 
 	// ---- Settings (edit here) ----
-	private static final int SKILL_SLOT = 1;              
+	private static final int SKILL_SLOT = 1;
 	private static final double MANA_COST = 25.0D;         // must match the MCreator procedure (used for the refund)
 	private static final int PUNCHES = 5;
 	private static final int PUNCH_INTERVAL = 4;           // ticks between punches (4 = 0.2s)
@@ -60,11 +60,7 @@ public class MonkPunchBarrage {
 	private static final double FRONT_DISTANCE = 1.4D;     // how close to the enemy he appears
 	private static final double REACH = 3.2D;              // if the enemy gets farther than this, the monk follows it
 	private static final boolean NEED_LINE_OF_SIGHT = true;
-	private static final boolean EFFECTS_ENABLED = true;
-	private static final boolean SOUNDS_ENABLED = true;
-
-	private static final DustParticleOptions TEAL = new DustParticleOptions(new Vector3f(0.35F, 0.95F, 0.90F), 1.0F);
-	private static final DustParticleOptions GOLD = new DustParticleOptions(new Vector3f(1.00F, 0.85F, 0.30F), 1.1F);
+	private static final boolean SOUNDS_ENABLED = true;    // only the "no target" feedback sound
 
 	private static class Barrage {
 		final UUID player;
@@ -105,8 +101,6 @@ public class MonkPunchBarrage {
 	}
 
 	private static void cast(ServerPlayer player, EldervaleModVariables.PlayerVariables v) {
-		ServerLevel level = player.serverLevel();
-
 		LivingEntity target = findTarget(player);
 		if (target == null) {
 			fail(player, v, "No target in range");
@@ -119,7 +113,6 @@ public class MonkPunchBarrage {
 		}
 
 		Vec3 from = player.position();
-		departureFx(level, from);
 
 		// face the target and teleport in front of it
 		float[] rot = rotationTo(dest, player.getEyeHeight(), target);
@@ -127,8 +120,11 @@ public class MonkPunchBarrage {
 		player.setDeltaMovement(Vec3.ZERO);
 		player.fallDistance = 0.0F;
 
-		arrivalFx(level, dest);
-		trailFx(level, from, dest);
+		// VFX: the teleport (from -> dest)
+		Vec3 d = dest.subtract(from);
+		double len = d.length();
+		if (len > 1.0E-3D)
+			VfxServer.sendAt(player, VfxIds.MONK_BARRAGE, VfxIds.START, 0, from.x, from.y, from.z, (float) len, d.x / len, d.y / len, d.z / len);
 
 		ACTIVE.put(player.getUUID(), new Barrage(player.getUUID(), target.getUUID(), target, 2));
 	}
@@ -271,7 +267,9 @@ public class MonkPunchBarrage {
 		if (hit)
 			b.anyHit = true;
 
-		punchFx(level, target, b.done, b.done == PUNCHES - 1, hit);
+		// VFX: one event per punch (arg = punch number, param = 1 on the last punch, 0 if it missed)
+		if (hit)
+			VfxServer.sendAt(player, VfxIds.MONK_BARRAGE, VfxIds.PULSE, b.done, target.getX(), target.getY(0.6D), target.getZ(), b.done == PUNCHES - 1 ? 1.0F : 0.5F);
 	}
 
 	private static void finish(ServerPlayer player, Barrage b) {
@@ -279,73 +277,6 @@ public class MonkPunchBarrage {
 			return;
 		MonkFlowState.registerHit(player, b.lastTarget); // +1 combo point
 		player.displayClientMessage(Component.literal("COMBO +1"), true);
-	}
-
-	// ---------------------------------------------------------------
-	//  Effects and sounds (sent by the server, everyone sees and hears them)
-	// ---------------------------------------------------------------
-	private static void departureFx(ServerLevel level, Vec3 p) {
-		if (EFFECTS_ENABLED) {
-			level.sendParticles(ParticleTypes.CLOUD, p.x, p.y + 0.9D, p.z, 12, 0.3D, 0.5D, 0.3D, 0.05D);
-			level.sendParticles(TEAL, p.x, p.y + 0.9D, p.z, 16, 0.4D, 0.6D, 0.4D, 0.02D);
-			level.sendParticles(ParticleTypes.END_ROD, p.x, p.y + 0.9D, p.z, 10, 0.3D, 0.6D, 0.3D, 0.1D);
-		}
-		if (SOUNDS_ENABLED)
-			level.playSound(null, p.x, p.y, p.z, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.6F, 1.6F);
-	}
-
-	private static void arrivalFx(ServerLevel level, Vec3 p) {
-		if (EFFECTS_ENABLED) {
-			level.sendParticles(TEAL, p.x, p.y + 0.9D, p.z, 16, 0.4D, 0.6D, 0.4D, 0.02D);
-			for (int i = 0; i < 14; i++) {
-				double a = i * (Math.PI * 2.0D / 14.0D);
-				level.sendParticles(ParticleTypes.END_ROD, p.x + Math.cos(a) * 0.5D, p.y + 0.15D, p.z + Math.sin(a) * 0.5D, 0, Math.cos(a), 0.1D, Math.sin(a), 0.12D);
-			}
-		}
-		if (SOUNDS_ENABLED) {
-			level.playSound(null, p.x, p.y, p.z, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.6F, 1.9F);
-			level.playSound(null, p.x, p.y, p.z, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.6F, 1.7F);
-		}
-	}
-
-	private static void trailFx(ServerLevel level, Vec3 from, Vec3 to) {
-		if (!EFFECTS_ENABLED)
-			return;
-		int n = (int) Math.min(24.0D, from.distanceTo(to) * 3.0D);
-		for (int i = 1; i < n; i++) {
-			double f = i / (double) n;
-			double x = from.x + (to.x - from.x) * f;
-			double y = from.y + (to.y - from.y) * f + 0.9D;
-			double z = from.z + (to.z - from.z) * f;
-			level.sendParticles(TEAL, x, y, z, 1, 0.05D, 0.2D, 0.05D, 0.0D);
-			if (i % 2 == 0)
-				level.sendParticles(ParticleTypes.END_ROD, x, y, z, 1, 0.05D, 0.1D, 0.05D, 0.01D);
-		}
-	}
-
-	private static void punchFx(ServerLevel level, LivingEntity target, int index, boolean last, boolean hit) {
-		double tx = target.getX(), ty = target.getY(0.6D), tz = target.getZ();
-
-		if (EFFECTS_ENABLED && hit) {
-			double side = index % 2 == 0 ? 0.25D : -0.25D;
-			level.sendParticles(ParticleTypes.CRIT, tx + side, ty, tz, 7, 0.25D, 0.3D, 0.25D, 0.3D);
-			level.sendParticles(last ? GOLD : TEAL, tx + side, ty, tz, 6, 0.25D, 0.3D, 0.25D, 0.02D);
-			if (last) {
-				level.sendParticles(ParticleTypes.EXPLOSION, tx, ty, tz, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-				for (int i = 0; i < 12; i++) {
-					double a = i * (Math.PI * 2.0D / 12.0D);
-					level.sendParticles(ParticleTypes.END_ROD, tx, ty, tz, 0, Math.cos(a), 0.1D, Math.sin(a), 0.2D);
-				}
-			}
-		}
-
-		if (SOUNDS_ENABLED) {
-			level.playSound(null, tx, ty, tz, SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.PLAYERS, 0.8F, 0.9F + index * 0.08F);
-			if (last) {
-				level.playSound(null, tx, ty, tz, SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 0.9F, 0.8F);
-				level.playSound(null, tx, ty, tz, SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.PLAYERS, 0.8F, 1.0F);
-			}
-		}
 	}
 
 	// ---------------------------------------------------------------

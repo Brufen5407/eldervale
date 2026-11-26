@@ -17,6 +17,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.server.level.ServerPlayer;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
 /**
  * Assassin passive: DEADLY AMBUSH.
@@ -27,6 +29,7 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
  * This class REPLACES the MCreator procedure AssassinPassive (which only did the +25%):
  * delete that procedure in MCreator, otherwise the bonus is applied twice.
  * Runs only on the server (no client classes), so it is safe on a dedicated server.
+ * Gameplay unchanged: the only addition is the VFX event on every hit that gets the bonus.
  */
 @EventBusSubscriber
 public class AssassinAmbush {
@@ -53,6 +56,7 @@ public class AssassinAmbush {
 			return;
 
 		event.setAmount(event.getAmount() * (1.0F + BONUS));
+		VfxServer.sendAt(player, VfxIds.ASSASSIN_AMBUSH, VfxIds.START, 0, target.getX(), target.getY(0.6D), target.getZ(), 0.0F);
 
 		long now = player.level().getGameTime();
 		Long next = NEXT_PROC.get(player.getUUID());

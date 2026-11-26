@@ -15,6 +15,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.server.level.ServerPlayer;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
 /**
  * Spellblade passive: ARCANE CONVERSION.
@@ -25,6 +27,7 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
  *
  * Uses LivingDamageEvent.Post, so only hits that actually dealt damage count ("andato a segno").
  * Runs only on the server (no client classes), so it is safe on a dedicated server.
+ * Gameplay unchanged: the only addition is the VFX event sent when the mana is restored.
  */
 @EventBusSubscriber
 public class SpellbladeArcaneConversion {
@@ -62,6 +65,10 @@ public class SpellbladeArcaneConversion {
 
 		v.MANA = Math.min(v.MANA_MAX, v.MANA + MANA_GAIN);
 		v.markSyncDirty();
+
+		// VFX: a spark flies from the enemy that was hit to the Spellblade (position = the enemy)
+		var t = event.getEntity();
+		VfxServer.sendAt(player, VfxIds.SPELLBLADE_CONVERSION, VfxIds.START, 0, t.getX(), t.getY(0.6D), t.getZ(), 0.0F);
 	}
 
 	// ---------------------------------------------------------------

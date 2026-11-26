@@ -15,13 +15,12 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
 /**
  * Spellblade skills: ARCANE SLASH (skill 1) and PHANTOM EDGE (skill 2).
@@ -38,6 +37,8 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
  * Damage uses playerAttack as source so that XP on kill works (XpLevelProcedure checks it);
  * the flag SpellbladeArcaneConversion.skillDamage stops the passive from triggering on skill hits.
  * Runs only on the server (no client classes), so it is safe on a dedicated server.
+ * Gameplay unchanged: the old particles and vanilla sounds are replaced by VFX events
+ * (START = the cast, IMPACT = every monster that is hit).
  */
 @EventBusSubscriber
 public class SpellbladeSkills {
@@ -102,6 +103,9 @@ public class SpellbladeSkills {
 		double px = player.getX();
 		double pz = player.getZ();
 
+		// VFX: the wave (param = length of the path)
+		VfxServer.sendAt(player, VfxIds.SPELLBLADE_SLASH, VfxIds.START, 0, px, player.getY(), pz, (float) SLASH_LENGTH, dir.x, 0.0D, dir.z);
+
 		for (Monster m : level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(SLASH_LENGTH, 2.5D, SLASH_LENGTH), e -> e.isAlive())) {
 			double rx = m.getX() - px;
 			double rz = m.getZ() - pz;
@@ -115,19 +119,9 @@ public class SpellbladeSkills {
 			if (dy < -2.0D || dy > 2.5D)
 				continue;
 			hit(player, m, damage);
-			level.sendParticles(ParticleTypes.ENCHANTED_HIT, m.getX(), m.getY() + m.getBbHeight() * 0.5D, m.getZ(), 8, 0.3D, 0.3D, 0.3D, 0.1D);
+			// the client plays the hit when the wave reaches it (arg = distance along the path in tenths of a block)
+			VfxServer.sendAt(player, VfxIds.SPELLBLADE_SLASH, VfxIds.IMPACT, (int) (forward * 10.0D), m.getX(), m.getY() + m.getBbHeight() * 0.5D, m.getZ(), 0.0F);
 		}
-
-		// visual: sweeps along the path + arcane sparkles across the width
-		double y = player.getY() + player.getBbHeight() * 0.6D;
-		for (double d = 1.5D; d <= SLASH_LENGTH; d += 1.5D) {
-			double cx = px + dir.x * d;
-			double cz = pz + dir.z * d;
-			level.sendParticles(ParticleTypes.SWEEP_ATTACK, cx, y, cz, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-			level.sendParticles(ParticleTypes.END_ROD, cx, y, cz, 4, dir.z * SLASH_HALF_WIDTH * 0.5D, 0.2D, dir.x * SLASH_HALF_WIDTH * 0.5D, 0.02D);
-		}
-		level.playSound(null, px, player.getY(), pz, SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0F, 1.2F);
-		level.playSound(null, px, player.getY(), pz, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 0.8F, 1.4F);
 	}
 
 	// ---------------------------------------------------------------
@@ -153,20 +147,9 @@ public class SpellbladeSkills {
 		hit(player, target, (float) (v.ATTACK * EDGE_DAMAGE_MULT));
 		target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, EDGE_SLOW_TICKS, EDGE_SLOW_LEVEL, false, true));
 
-		// visual: arcane line from the player to the target, blade falling on the target
-		Vec3 from = player.getEyePosition();
-		Vec3 to = target.position().add(0.0D, target.getBbHeight() * 0.5D, 0.0D);
-		Vec3 step = to.subtract(from);
-		int points = Math.max(2, (int) (step.length() * 2.0D));
-		for (int i = 0; i <= points; i++) {
-			Vec3 p = from.add(step.scale((double) i / points));
-			level.sendParticles(ParticleTypes.END_ROD, p.x, p.y, p.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-		}
-		for (double h = 3.0D; h >= 0.0D; h -= 0.4D)
-			level.sendParticles(ParticleTypes.END_ROD, target.getX(), target.getY() + h, target.getZ(), 1, 0.05D, 0.0D, 0.05D, 0.0D);
-		level.sendParticles(ParticleTypes.ENCHANTED_HIT, to.x, to.y, to.z, 15, 0.4D, 0.4D, 0.4D, 0.2D);
-		level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.EVOKER_CAST_SPELL, SoundSource.PLAYERS, 1.0F, 1.3F);
-		level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.PLAYERS, 0.9F, 1.0F);
+		// VFX: START = the cast, IMPACT = the blade lands on the target (arg = slow duration)
+		VfxServer.send(player, VfxIds.SPELLBLADE_PHANTOM, VfxIds.START, 0, (float) EDGE_RANGE);
+		VfxServer.sendAt(player, VfxIds.SPELLBLADE_PHANTOM, VfxIds.IMPACT, EDGE_SLOW_TICKS, target.getX(), target.getY(), target.getZ(), target.getBbHeight());
 		return true;
 	}
 

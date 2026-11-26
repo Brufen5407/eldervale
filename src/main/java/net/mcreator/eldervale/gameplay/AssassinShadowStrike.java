@@ -19,6 +19,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
 /**
  * Assassin skill: SHADOW STRIKE.
@@ -32,6 +34,7 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
  * This class detects the cast on the server (the SKILL1 cooldown jumps up), the same
  * pattern used by MonkPunchBarrage and AssassinSmokeBomb.
  * Runs only on the server (no client classes), so it is safe on a dedicated server.
+ * Gameplay unchanged: the only addition is the VFX event sent when the strike really happens.
  */
 @EventBusSubscriber
 public class AssassinShadowStrike {
@@ -106,6 +109,9 @@ public class AssassinShadowStrike {
 		if (!found)
 			return false;
 
+		// where the dash starts (for the VFX)
+		double fromX = player.getX(), fromY = player.getY(), fromZ = player.getZ();
+
 		// teleport and face the target
 		float yaw = Mth.wrapDegrees((float) (Mth.atan2(target.getZ() - tz, target.getX() - tx) * 57.29577951308232D) - 90.0F);
 		player.connection.teleport(tx, ty, tz, yaw, 0.0F);
@@ -114,6 +120,14 @@ public class AssassinShadowStrike {
 		player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, INVISIBILITY_TICKS, 0, false, false));
 		double mult = lookingAtPlayer ? DAMAGE_MULT : BONUS_MULT;
 		target.hurt(level.damageSources().playerAttack(player), (float) (v.ATTACK * mult));
+
+		// VFX: the dash (from -> landing) and the hit on the target. Only a packet, nothing changes in the gameplay.
+		double dx = tx - fromX, dy = ty - fromY, dz = tz - fromZ;
+		double len = Math.sqrt(dx * dx + dy * dy + dz * dz);
+		if (len > 1.0E-3D) {
+			VfxServer.sendAt(player, VfxIds.ASSASSIN_STRIKE, VfxIds.START, lookingAtPlayer ? 0 : 1, fromX, fromY, fromZ, (float) len, dx / len, dy / len, dz / len);
+			VfxServer.sendAt(player, VfxIds.ASSASSIN_STRIKE, VfxIds.IMPACT, 0, target.getX(), target.getY(), target.getZ(), 0.0F);
+		}
 		return true;
 	}
 

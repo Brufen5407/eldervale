@@ -373,4 +373,62 @@ public final class VfxGfx {
 		qy = sy / l;
 		qz = sz / l;
 	}
+
+	// ---------------------------------------------------------------
+	//  Shapes in any plane (slashes, vertical rings, discs facing a direction)
+	// ---------------------------------------------------------------
+
+	/** Ring segment in the plane spanned by the unit vectors u and v. Angles in radians, measured from u toward v. */
+	public void arcPlane(double x, double y, double z, double ux, double uy, double uz, double vx, double vy, double vz, double rIn, double rOut, double a0, double a1, float aIn, float aOut, int segs) {
+		if (rOut <= 0.0D)
+			return;
+		rIn = Math.max(0.0D, rIn);
+		for (int i = 0; i < segs; i++) {
+			double t0 = a0 + (a1 - a0) * i / segs;
+			double t1 = a0 + (a1 - a0) * (i + 1) / segs;
+			double c0 = Math.cos(t0), s0 = Math.sin(t0), c1 = Math.cos(t1), s1 = Math.sin(t1);
+			double d0x = ux * c0 + vx * s0, d0y = uy * c0 + vy * s0, d0z = uz * c0 + vz * s0;
+			double d1x = ux * c1 + vx * s1, d1y = uy * c1 + vy * s1, d1z = uz * c1 + vz * s1;
+			quad(x + d0x * rIn, y + d0y * rIn, z + d0z * rIn, aIn, 0.0F,
+					x + d0x * rOut, y + d0y * rOut, z + d0z * rOut, aOut, 1.0F,
+					x + d1x * rOut, y + d1y * rOut, z + d1z * rOut, aOut, 1.0F,
+					x + d1x * rIn, y + d1y * rIn, z + d1z * rIn, aIn, 0.0F);
+		}
+	}
+
+	/**
+	 * Sword slash: a crescent of light in the plane (u,v) with sharp tips. thick = width in the middle.
+	 * The bright edge (primary color) is on the outside, the inside fades out. a = peak alpha.
+	 */
+	public void crescent(double x, double y, double z, double ux, double uy, double uz, double vx, double vy, double vz, double radius, double thick, double a0, double a1, float a, int segs) {
+		for (int i = 0; i < segs; i++) {
+			double s0 = i / (double) segs, s1 = (i + 1) / (double) segs;
+			double t0 = a0 + (a1 - a0) * s0, t1 = a0 + (a1 - a0) * s1;
+			double w0 = thick * Math.pow(Math.sin(Math.PI * s0), 0.8D), w1 = thick * Math.pow(Math.sin(Math.PI * s1), 0.8D);
+			double c0 = Math.cos(t0), n0 = Math.sin(t0), c1 = Math.cos(t1), n1 = Math.sin(t1);
+			double d0x = ux * c0 + vx * n0, d0y = uy * c0 + vy * n0, d0z = uz * c0 + vz * n0;
+			double d1x = ux * c1 + vx * n1, d1y = uy * c1 + vy * n1, d1z = uz * c1 + vz * n1;
+			float al0 = a * (float) Math.pow(Math.sin(Math.PI * s0), 0.5D), al1 = a * (float) Math.pow(Math.sin(Math.PI * s1), 0.5D);
+			quad(x + d0x * (radius - w0), y + d0y * (radius - w0), z + d0z * (radius - w0), 0.0F, 0.0F,
+					x + d0x * radius, y + d0y * radius, z + d0z * radius, al0, 1.0F,
+					x + d1x * radius, y + d1y * radius, z + d1z * radius, al1, 1.0F,
+					x + d1x * (radius - w1), y + d1y * (radius - w1), z + d1z * (radius - w1), 0.0F, 0.0F);
+		}
+	}
+
+	/** Straight beam between two points, always facing the camera, with a hot center (secondary color). */
+	public void beam(double x0, double y0, double z0, double x1, double y1, double z1, double halfWidth, float a0, float a1) {
+		double dx = x1 - x0, dy = y1 - y0, dz = z1 - z0;
+		double mx = (x0 + x1) * 0.5D - cx, my = (y0 + y1) * 0.5D - cy, mz = (z0 + z1) * 0.5D - cz;
+		double sx = dy * mz - dz * my, sy = dz * mx - dx * mz, sz = dx * my - dy * mx;
+		double l = Math.sqrt(sx * sx + sy * sy + sz * sz);
+		if (l < 1.0E-9D)
+			return;
+		double k = halfWidth / l;
+		sx *= k;
+		sy *= k;
+		sz *= k;
+		quad(x0, y0, z0, a0, 0.0F, x1, y1, z1, a1, 0.0F, x1 + sx, y1 + sy, z1 + sz, a1 * 0.2F, 1.0F, x0 + sx, y0 + sy, z0 + sz, a0 * 0.2F, 1.0F);
+		quad(x0, y0, z0, a0, 0.0F, x0 - sx, y0 - sy, z0 - sz, a0 * 0.2F, 1.0F, x1 - sx, y1 - sy, z1 - sz, a1 * 0.2F, 1.0F, x1, y1, z1, a1, 0.0F);
+	}
 }

@@ -19,13 +19,12 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
 /**
  * Mage skills: ARCANE NOVA (skill 1) and METEOR STRIKE (skill 2).
@@ -42,6 +41,7 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
  * Both casts feed MageArcaneMastery (passive) and use its multiplier on the damage.
  * Damage uses playerAttack as source so that XP on kill works (XpLevelProcedure checks it).
  * Runs only on the server (no client classes), so it is safe on a dedicated server.
+ * Gameplay unchanged: the old particles and sounds are replaced by VFX events.
  */
 @EventBusSubscriber
 public class MageSkills {
@@ -57,7 +57,6 @@ public class MageSkills {
 	private static final double METEOR_RADIUS = 4.0D;
 	private static final double METEOR_DAMAGE_MULT = 14.0D;  // x ATT
 	private static final int METEOR_FALL_TICKS = 20;         // 1 s
-	private static final double METEOR_START_HEIGHT = 14.0D;
 
 	/** previous {SKILL1_CD, SKILL2_CD} per player, updated in place (no allocation per tick) */
 	private static final Map<UUID, double[]> PREV_CD = new HashMap<>();
@@ -100,11 +99,13 @@ public class MageSkills {
 
 		// cast: the cooldown jumped up to its maximum
 		if (cd1 - p1 > 50.0D && cd1 >= v.SKILL1_MAX_CD - 10.0D) {
-			MageArcaneMastery.onCast(player);
+			int stacks = MageArcaneMastery.onCast(player);
+			VfxServer.send(player, VfxIds.MAGE_MASTERY, VfxIds.START, stacks, 0.0F);
 			arcaneNova(player, v);
 		}
 		if (cd2 - p2 > 50.0D && cd2 >= v.SKILL2_MAX_CD - 10.0D) {
-			MageArcaneMastery.onCast(player);
+			int stacks = MageArcaneMastery.onCast(player);
+			VfxServer.send(player, VfxIds.MAGE_MASTERY, VfxIds.START, stacks, 0.0F);
 			meteorStrike(player);
 		}
 	}
@@ -134,22 +135,7 @@ public class MageSkills {
 			m.hurtMarked = true;
 		}
 
-		// visual: expanding arcane rings + burst in the centre
-		double cx = player.getX();
-		double cy = player.getY() + 0.2D;
-		double cz = player.getZ();
-		for (int ring = 1; ring <= 3; ring++) {
-			double r = NOVA_RADIUS * ring / 3.0D;
-			int points = ring * 12;
-			for (int i = 0; i < points; i++) {
-				double a = Math.PI * 2.0D * i / points;
-				level.sendParticles(ParticleTypes.END_ROD, cx + Math.cos(a) * r, cy, cz + Math.sin(a) * r, 1, 0.0D, 0.05D, 0.0D, 0.02D);
-			}
-		}
-		level.sendParticles(ParticleTypes.ENCHANTED_HIT, cx, cy + 0.8D, cz, 30, 0.8D, 0.6D, 0.8D, 0.3D);
-		level.sendParticles(ParticleTypes.EXPLOSION, cx, cy + 0.5D, cz, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-		level.playSound(null, cx, player.getY(), cz, SoundEvents.EVOKER_CAST_SPELL, SoundSource.PLAYERS, 1.0F, 0.8F);
-		level.playSound(null, cx, player.getY(), cz, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 0.8F, 1.4F);
+		VfxServer.send(player, VfxIds.MAGE_NOVA, VfxIds.START, 0, (float) NOVA_RADIUS);
 	}
 
 	// ---------------------------------------------------------------
@@ -171,7 +157,9 @@ public class MageSkills {
 		}
 
 		METEORS.add(new Meteor(level, point, player.getUUID()));
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0F, 0.6F);
+		// VFX: START = the cast at the Mage, IMPACT = the point where the meteor will land (arg = fall ticks)
+		VfxServer.send(player, VfxIds.MAGE_METEOR, VfxIds.START, 0, (float) METEOR_RADIUS);
+		VfxServer.sendAt(player, VfxIds.MAGE_METEOR, VfxIds.IMPACT, METEOR_FALL_TICKS, point.x, point.y, point.z, (float) METEOR_RADIUS);
 	}
 
 	@SubscribeEvent
@@ -183,19 +171,6 @@ public class MageSkills {
 		while (it.hasNext()) {
 			Meteor m = it.next();
 			m.elapsed++;
-			double p = Math.min(1.0D, (double) m.elapsed / METEOR_FALL_TICKS);
-
-			// falling meteor (accelerating) + warning circle on the ground
-			double y = m.pos.y + METEOR_START_HEIGHT * (1.0D - p * p);
-			m.level.sendParticles(ParticleTypes.FLAME, m.pos.x, y, m.pos.z, 8, 0.3D, 0.3D, 0.3D, 0.02D);
-			m.level.sendParticles(ParticleTypes.LARGE_SMOKE, m.pos.x, y + 0.5D, m.pos.z, 3, 0.3D, 0.3D, 0.3D, 0.02D);
-			if (m.elapsed % 5 == 1) {
-				for (int i = 0; i < 16; i++) {
-					double a = Math.PI * 2.0D * i / 16.0D;
-					m.level.sendParticles(ParticleTypes.END_ROD, m.pos.x + Math.cos(a) * METEOR_RADIUS, m.pos.y + 0.1D, m.pos.z + Math.sin(a) * METEOR_RADIUS, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-				}
-			}
-
 			if (m.elapsed >= METEOR_FALL_TICKS) {
 				impact(m);
 				it.remove();
@@ -205,9 +180,6 @@ public class MageSkills {
 
 	private static void impact(Meteor m) {
 		ServerLevel level = m.level;
-		level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, m.pos.x, m.pos.y + 0.5D, m.pos.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-		level.sendParticles(ParticleTypes.FLAME, m.pos.x, m.pos.y + 0.5D, m.pos.z, 40, METEOR_RADIUS * 0.4D, 0.4D, METEOR_RADIUS * 0.4D, 0.15D);
-		level.playSound(null, m.pos.x, m.pos.y, m.pos.z, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.PLAYERS, 1.5F, 0.7F);
 
 		// the caster must still be online to deal damage (kill credit and ATT come from it)
 		ServerPlayer owner = level.getServer().getPlayerList().getPlayer(m.owner);

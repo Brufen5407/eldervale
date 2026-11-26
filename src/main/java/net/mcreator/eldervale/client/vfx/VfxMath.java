@@ -25,6 +25,11 @@ public final class VfxMath {
 		return u * u * u;
 	}
 
+	/** Inverse of easeOut: the time fraction at which easeOut reaches the value v. */
+	public static float easeOutInverse(float v) {
+		return 1.0F - (float) Math.cbrt(1.0F - clamp01(v));
+	}
+
 	public static float easeInOut(float t) {
 		float u = clamp01(t);
 		return u * u * (3.0F - 2.0F * u);

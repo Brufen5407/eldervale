@@ -1,21 +1,21 @@
 package net.mcreator.eldervale.procedures;
 
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.BlockPos;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
 import net.mcreator.eldervale.init.EldervaleModEntities;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
+/** Ranger skill 1: DECOY. Gameplay unchanged; the loud vanilla sound is replaced by the VFX event. */
 public class RangerSkill1Procedure {
 	public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
 		if (entity == null)
@@ -31,13 +31,8 @@ public class RangerSkill1Procedure {
 					entityToSpawn.setYRot(world.getRandom().nextFloat() * 360F);
 				}
 			}
-			if (world instanceof Level _level) {
-				if (!_level.isClientSide()) {
-					_level.playSound(null, BlockPos.containing(x, y, z), BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.bamboo_wood.break")), SoundSource.NEUTRAL, 2, 5);
-				} else {
-					_level.playLocalSound(x, y, z, BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.bamboo_wood.break")), SoundSource.NEUTRAL, 2, 5, false);
-				}
-			}
+			if (entity instanceof ServerPlayer sp)
+				VfxServer.sendAt(sp, VfxIds.RANGER_DECOY, VfxIds.START, 0, x, y, z, 2.5F);
 			{
 				EldervaleModVariables.PlayerVariables _vars = entity.getData(EldervaleModVariables.PLAYER_VARIABLES);
 				_vars.MANA = entity.getData(EldervaleModVariables.PLAYER_VARIABLES).MANA - 35;

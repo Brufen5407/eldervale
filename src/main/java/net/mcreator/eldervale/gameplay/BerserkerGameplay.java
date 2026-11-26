@@ -14,21 +14,21 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.Holder;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
 import java.util.List;
 
 /**
  * Server-safe Berserker logic. Replaces BerserkerPassiveProcedure and BerserkerModeDMGProcedure.
  * Runs only on the server (it never touches client classes), so it is safe on a dedicated server.
+ * Gameplay unchanged: the old particles and sounds of the splash are replaced by a VFX event.
  */
 @EventBusSubscriber
 public class BerserkerGameplay {
@@ -39,7 +39,7 @@ public class BerserkerGameplay {
 	private static final double ATTACK_BONUS = 0.5D;       // +50% attack damage
 	private static final float SPLASH_RATIO = 0.5F;        // nearby mob takes 50% of the damage dealt
 	private static final double SPLASH_RANGE = 2.0D;       // how far from the target the splash reaches
-	private static final boolean SPLASH_EFFECTS = true;    // spark line + sound on the splash
+	private static final boolean SPLASH_EFFECTS = true;    // lightning-like line + sound on the splash
 
 	private static final ResourceLocation SPEED_ID = ResourceLocation.fromNamespaceAndPath("eldervale", "berserk_mode_speed");
 	private static final ResourceLocation ATTACK_ID = ResourceLocation.fromNamespaceAndPath("eldervale", "berserk_mode_attack");
@@ -133,12 +133,10 @@ public class BerserkerGameplay {
 		if (SPLASH_EFFECTS) {
 			double x1 = target.getX(), y1 = target.getY() + target.getBbHeight() * 0.6D, z1 = target.getZ();
 			double x2 = best.getX(), y2 = best.getY() + best.getBbHeight() * 0.6D, z2 = best.getZ();
-			for (int i = 0; i <= 8; i++) {
-				double f = i / 8.0D;
-				level.sendParticles(ParticleTypes.CRIT, x1 + (x2 - x1) * f, y1 + (y2 - y1) * f, z1 + (z2 - z1) * f, 1, 0.02D, 0.02D, 0.02D, 0.01D);
-			}
-			level.sendParticles(ParticleTypes.SWEEP_ATTACK, x2, y2, z2, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-			level.playSound(null, x2, y2, z2, SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 0.8F, 0.8F);
+			double dx = x2 - x1, dy = y2 - y1, dz = z2 - z1;
+			double len = Math.sqrt(dx * dx + dy * dy + dz * dz);
+			if (len > 1.0E-4D)
+				VfxServer.sendAt(attacker, VfxIds.BERSERK_SPLASH, VfxIds.START, 0, x1, y1, z1, (float) len, dx / len, dy / len, dz / len);
 		}
 	}
 }

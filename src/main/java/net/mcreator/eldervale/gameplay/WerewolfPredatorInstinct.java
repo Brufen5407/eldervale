@@ -8,12 +8,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.Holder;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
@@ -27,6 +23,8 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
  * Modifiers are transient with their own IDs, so they stack additively with Beast Transformation
  * (+30% / +20%): both active = +45% attack speed and +35% movement speed.
  * Server only (no client classes): safe on a dedicated server.
+ * Gameplay unchanged: the old growl and particles are removed. The client VFX aura (VfxAuras) draws the state
+ * by watching the same condition (werewolf below 50% HP).
  */
 @EventBusSubscriber
 public class WerewolfPredatorInstinct {
@@ -55,12 +53,6 @@ public class WerewolfPredatorInstinct {
 
 		setModifier(player, Attributes.ATTACK_SPEED, ATTACK_SPEED_ID, wanted ? ATTACK_SPEED_BONUS : 0.0D);
 		setModifier(player, Attributes.MOVEMENT_SPEED, MOVE_SPEED_ID, wanted ? MOVE_SPEED_BONUS : 0.0D);
-
-		if (wanted) {
-			ServerLevel level = player.serverLevel();
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.WOLF_GROWL, SoundSource.PLAYERS, 0.8F, 0.9F);
-			level.sendParticles(ParticleTypes.ANGRY_VILLAGER, player.getX(), player.getY() + 1.8D, player.getZ(), 5, 0.3D, 0.2D, 0.3D, 0.0D);
-		}
 	}
 
 	private static void setModifier(ServerPlayer player, Holder<Attribute> attribute, ResourceLocation id, double amount) {

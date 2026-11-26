@@ -24,24 +24,25 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.core.particles.ParticleTypes;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
 import net.mcreator.eldervale.init.EldervaleModEntities;
 import net.mcreator.eldervale.entity.MagicArrowEntity;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
 /**
  * Ranger skill 2: Magic Arrows.
  * Mana and cooldown stay in RangerSkill2Procedure. This class detects the cast on the server
  * (SKILL2_CD jumps up to its max), then does the backward leap and fires a volley of 3 arrows.
  * Runs only on the server, so it is safe on a dedicated server.
+ * Gameplay unchanged: the old particles and sounds are replaced by VFX events (START at the cast,
+ * PULSE for every arrow with the arrow entity id so the client can draw its trail).
  */
 @EventBusSubscriber
 public class RangerMagicArrows {
@@ -101,6 +102,7 @@ public class RangerMagicArrows {
 
 	private static void cast(ServerPlayer player) {
 		ServerLevel level = player.serverLevel();
+		VfxServer.send(player, VfxIds.RANGER_ARROWS, VfxIds.START, 0, 3.0F);
 
 		// nearest hostile targets that the ranger can see
 		AABB box = player.getBoundingBox().inflate(RANGE);
@@ -181,8 +183,8 @@ public class RangerMagicArrows {
 		arrow.shoot(n.x, n.y, n.z, ARROW_SPEED, INACCURACY);
 		level.addFreshEntity(arrow);
 
-		level.sendParticles(ParticleTypes.ELECTRIC_SPARK, origin.x + n.x, origin.y + n.y, origin.z + n.z, 5, 0.08D, 0.08D, 0.08D, 0.05D);
-		level.playSound(null, origin.x, origin.y, origin.z, SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 0.5F, 1.4F + s.index * 0.15F);
+		// VFX: muzzle flash + the arrow id (so the client draws the trail and the hit)
+		VfxServer.sendAt(player, VfxIds.RANGER_ARROWS, VfxIds.PULSE, arrow.getId(), origin.x + n.x, origin.y + n.y, origin.z + n.z, s.index, n.x, n.y, n.z);
 	}
 
 	private static ItemStack weapon(Level level) {

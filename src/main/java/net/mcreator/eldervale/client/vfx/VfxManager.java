@@ -19,7 +19,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 
-import net.mcreator.eldervale.client.vfx.effects.MonkMeditationVfx;
+import net.mcreator.eldervale.client.vfx.effects.*;
 import net.mcreator.eldervale.vfx.VfxEventPayload;
 import net.mcreator.eldervale.vfx.VfxIds;
 
@@ -86,6 +86,31 @@ public final class VfxManager {
 	private static VfxEffect create(VfxEventPayload p) {
 		return switch (p.vfxId()) {
 			case VfxIds.MONK_MEDITATION -> new MonkMeditationVfx(p);
+			case VfxIds.MONK_BARRAGE -> new MonkBarrageVfx(p);
+			case VfxIds.PALADIN_SHIELDS -> new PaladinShieldsVfx(p);
+			case VfxIds.PALADIN_ZONE -> new PaladinZoneVfx(p);
+			case VfxIds.BERSERKER_SLAM -> new BerserkerSlamVfx(p);
+			case VfxIds.BERSERKER_CHARGE -> new BerserkerChargeVfx(p);
+			case VfxIds.BERSERK_MODE -> new BerserkModeVfx(p);
+			case VfxIds.BERSERK_SPLASH -> new BerserkSplashVfx(p);
+			case VfxIds.RANGER_DECOY -> new RangerDecoyVfx(p);
+			case VfxIds.RANGER_ARROWS -> new RangerArrowsVfx(p);
+			case VfxIds.RANGER_REFLEX -> new RangerReflexVfx(p);
+			case VfxIds.MAGE_NOVA -> new MageNovaVfx(p);
+			case VfxIds.MAGE_METEOR -> new MageMeteorVfx(p);
+			case VfxIds.MAGE_MASTERY -> new MageMasteryVfx(p);
+			case VfxIds.ASSASSIN_STRIKE -> new AssassinStrikeVfx(p);
+			case VfxIds.ASSASSIN_SMOKE -> new AssassinSmokeVfx(p);
+			case VfxIds.ASSASSIN_AMBUSH -> new AssassinAmbushVfx(p);
+			case VfxIds.WEREWOLF_BEAST -> new WerewolfBeastVfx(p);
+			case VfxIds.WEREWOLF_POUNCE -> new WerewolfPounceVfx(p);
+			case VfxIds.WEREWOLF_INSTINCT -> new WerewolfInstinctVfx(p);
+			case VfxIds.ALCHEMIST_BREW -> new AlchemistBrewVfx(p);
+			case VfxIds.ALCHEMIST_COMPOUND -> new AlchemistCompoundVfx(p);
+			case VfxIds.ALCHEMIST_CONTAMINATION -> new AlchemistContaminationVfx(p);
+			case VfxIds.SPELLBLADE_SLASH -> new SpellbladeSlashVfx(p);
+			case VfxIds.SPELLBLADE_PHANTOM -> new SpellbladePhantomVfx(p);
+			case VfxIds.SPELLBLADE_CONVERSION -> new SpellbladeConversionVfx(p);
 			default -> null;
 		};
 	}

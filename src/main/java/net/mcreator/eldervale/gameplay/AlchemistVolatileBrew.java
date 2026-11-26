@@ -10,8 +10,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import org.joml.Vector3f;
-
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
@@ -32,17 +30,15 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.component.DataComponents;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 
 /**
  * Alchemist skill 1: VOLATILE BREW.
@@ -56,6 +52,8 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
  * This class detects the cast on the server (the SKILL1 cooldown jumps up), the same
  * pattern used by AssassinShadowStrike and MonkPunchBarrage.
  * Runs only on the server (no client classes), so it is safe on a dedicated server.
+ * Gameplay unchanged: the old particles and vanilla sounds are replaced by VFX events
+ * (START = the throw, with the potion entity id so the client draws its trail; IMPACT = the toxic cloud).
  */
 @EventBusSubscriber
 public class AlchemistVolatileBrew {
@@ -70,10 +68,6 @@ public class AlchemistVolatileBrew {
 	private static final float THROW_SPEED = 0.8F;
 	private static final int THROW_EXPIRE_TICKS = 200;         // forgets a potion that never landed
 	private static final int POTION_COLOR = 0x6BCB3A;
-	private static final boolean EFFECTS_ENABLED = true;
-	private static final boolean SOUNDS_ENABLED = true;
-
-	private static final DustParticleOptions TOXIC = new DustParticleOptions(new Vector3f(0.45F, 0.85F, 0.20F), 1.5F);
 
 	private record Thrown(UUID owner, int expires) {
 	}
@@ -129,8 +123,8 @@ public class AlchemistVolatileBrew {
 		THROWN.put(potion.getUUID(), new Thrown(player.getUUID(), player.getServer().getTickCount() + THROW_EXPIRE_TICKS));
 		level.addFreshEntity(potion);
 
-		if (SOUNDS_ENABLED)
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SPLASH_POTION_THROW, SoundSource.PLAYERS, 0.6F, 0.8F);
+		// VFX: the throw (arg = potion entity id: the client follows it and draws the trail)
+		VfxServer.send(player, VfxIds.ALCHEMIST_BREW, VfxIds.START, potion.getId(), (float) RADIUS);
 	}
 
 	// ---------------------------------------------------------------
@@ -157,7 +151,7 @@ public class AlchemistVolatileBrew {
 		Vec3 p = event.getRayTraceResult().getLocation();
 		double att = owner.getData(EldervaleModVariables.PLAYER_VARIABLES).ATTACK;
 		CLOUDS.add(new Cloud(level.dimension(), owner.getUUID(), p.x, p.y, p.z, att));
-		burstFx(level, p);
+		VfxServer.sendAt(owner, VfxIds.ALCHEMIST_BREW, VfxIds.IMPACT, CLOUD_TICKS, p.x, p.y, p.z, (float) RADIUS);
 	}
 
 	// ---------------------------------------------------------------
@@ -182,8 +176,6 @@ public class AlchemistVolatileBrew {
 				it.remove();
 				continue;
 			}
-			if (c.age % 4 == 0)
-				cloudFx(level, c);
 			if (c.age % PULSE_INTERVAL == 0)
 				pulse(level, owner, c);
 			c.age++;
@@ -208,41 +200,6 @@ public class AlchemistVolatileBrew {
 		double dx = e.getX() - c.x;
 		double dz = e.getZ() - c.z;
 		return dx * dx + dz * dz <= RADIUS * RADIUS;
-	}
-
-	// ---------------------------------------------------------------
-	//  Effects and sounds (sent by the server, everyone sees and hears them)
-	// ---------------------------------------------------------------
-	private static void burstFx(ServerLevel level, Vec3 p) {
-		if (EFFECTS_ENABLED) {
-			level.sendParticles(ParticleTypes.POOF, p.x, p.y + 0.4D, p.z, 25, 0.5D, 0.3D, 0.5D, 0.1D);
-			level.sendParticles(ParticleTypes.SNEEZE, p.x, p.y + 0.4D, p.z, 20, 0.6D, 0.3D, 0.6D, 0.08D);
-			for (int i = 0; i < 36; i++) {
-				double a = i * (Math.PI * 2.0D / 36.0D);
-				level.sendParticles(TOXIC, p.x + Math.cos(a) * RADIUS * 0.8D, p.y + 0.3D, p.z + Math.sin(a) * RADIUS * 0.8D, 2, 0.1D, 0.2D, 0.1D, 0.0D);
-			}
-		}
-		if (SOUNDS_ENABLED) {
-			level.playSound(null, p.x, p.y, p.z, SoundEvents.SPLASH_POTION_BREAK, SoundSource.PLAYERS, 0.9F, 0.7F);
-			level.playSound(null, p.x, p.y, p.z, SoundEvents.BREWING_STAND_BREW, SoundSource.PLAYERS, 0.8F, 0.6F);
-		}
-	}
-
-	private static void cloudFx(ServerLevel level, Cloud c) {
-		if (!EFFECTS_ENABLED)
-			return;
-		for (int i = 0; i < 6; i++) {
-			double a = level.getRandom().nextDouble() * Math.PI * 2.0D;
-			double r = RADIUS * Math.sqrt(level.getRandom().nextDouble());
-			level.sendParticles(TOXIC, c.x + Math.cos(a) * r, c.y + 0.3D + level.getRandom().nextDouble() * 0.8D, c.z + Math.sin(a) * r, 1, 0.1D, 0.1D, 0.1D, 0.0D);
-		}
-		for (int i = 0; i < 2; i++) {
-			double a = level.getRandom().nextDouble() * Math.PI * 2.0D;
-			double r = RADIUS * Math.sqrt(level.getRandom().nextDouble());
-			level.sendParticles(ParticleTypes.SNEEZE, c.x + Math.cos(a) * r, c.y + 0.4D, c.z + Math.sin(a) * r, 0, 0.0D, 0.05D, 0.0D, 1.0D);
-		}
-		if (SOUNDS_ENABLED && c.age % 20 == 0)
-			level.playSound(null, c.x, c.y, c.z, SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, SoundSource.PLAYERS, 0.5F, 0.8F);
 	}
 
 	// ---------------------------------------------------------------

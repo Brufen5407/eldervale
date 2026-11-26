@@ -6,20 +6,20 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.vfx.VfxIds;
+import net.mcreator.eldervale.vfx.VfxServer;
 import net.mcreator.eldervale.EldervaleMod;
 
 import java.util.Comparator;
 
+/** Berserker skill 1: BERSERK SLAM. Gameplay unchanged; the old particles are replaced by the VFX events. */
 public class Berserkeskill1Procedure {
 	public static void execute(LevelAccessor world, Entity entity) {
 		if (entity == null)
 			return;
-		boolean check = false;
-		Entity aoe_mob = null;
 		if ((entity.getData(EldervaleModVariables.PLAYER_VARIABLES).PLAYER_CLASS).equals("berserker") && entity.getData(EldervaleModVariables.PLAYER_VARIABLES).SKILL1_CD < 1 && entity.getData(EldervaleModVariables.PLAYER_VARIABLES).MANA >= 30) {
 			entity.setDeltaMovement(new Vec3(0, 0.6, 0));
 			{
@@ -29,6 +29,8 @@ public class Berserkeskill1Procedure {
 				_vars.MANA = entity.getData(EldervaleModVariables.PLAYER_VARIABLES).MANA - 30;
 				_vars.markSyncDirty();
 			}
+			if (entity instanceof ServerPlayer sp)
+				VfxServer.send(sp, VfxIds.BERSERKER_SLAM, VfxIds.START, 0, 3.5F);
 			EldervaleMod.queueServerWork(20, () -> {
 				{
 					final Vec3 _center = new Vec3((entity.getX()), (entity.getY()), (entity.getZ()));
@@ -36,10 +38,10 @@ public class Berserkeskill1Procedure {
 						if (!(entityiterator == entity)) {
 							entityiterator.hurt(new DamageSource(world.holderOrThrow(DamageTypes.PLAYER_ATTACK)), 5);
 						}
-						if (world instanceof ServerLevel _level)
-							_level.sendParticles(ParticleTypes.ANGRY_VILLAGER, (entityiterator.getX()), (entityiterator.getY()), (entityiterator.getZ()), 25, 0.2, 0.5, 0.2, 0.02);
 					}
 				}
+				if (entity instanceof ServerPlayer sp)
+					VfxServer.sendAt(sp, VfxIds.BERSERKER_SLAM, VfxIds.IMPACT, 0, entity.getX(), entity.getY(), entity.getZ(), 3.5F);
 			});
 		}
 	}
