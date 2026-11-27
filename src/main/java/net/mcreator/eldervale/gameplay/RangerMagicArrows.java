@@ -53,7 +53,8 @@ public class RangerMagicArrows {
 	private static final int SHOT_DELAY = 3;           // ticks between arrows (volley)
 	private static final float ARROW_SPEED = 2.5F;
 	private static final float INACCURACY = 0.6F;      // 0 = perfectly accurate
-	private static final double ARROW_DAMAGE = 3.0D;
+	private static final double ARROW_ATT_MULT = 2.5D; // x ATTACK (Ranger ATT 1.2 -> 3.0, same as before)
+    private static final double ARROW_FALLBACK_DAMAGE = 3.0D;
 	private static final int KNOCKBACK = 1;
 	private static final float FAN_ANGLE = 10.0F;      // degrees between arrows when there is no enemy
 	private static final boolean NEED_LINE_OF_SIGHT = true;
@@ -176,7 +177,8 @@ public class RangerMagicArrows {
 
 		MagicArrowEntity arrow = new MagicArrowEntity(EldervaleModEntities.MAGIC_ARROW.get(), 0, 0, 0, level, weapon(level));
 		arrow.setOwner(player);
-		arrow.setBaseDamage(ARROW_DAMAGE);
+		EldervaleModVariables.PlayerVariables v = player.getData(EldervaleModVariables.PLAYER_VARIABLES);
+        arrow.setBaseDamage(v.ATTACK > 0.0D ? v.ATTACK * ARROW_ATT_MULT : ARROW_FALLBACK_DAMAGE);
 		arrow.setSilent(true);
 		arrow.pickup = AbstractArrow.Pickup.DISALLOWED;
 		arrow.setPos(origin.x + n.x, origin.y + n.y, origin.z + n.z);

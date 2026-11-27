@@ -3,20 +3,26 @@ package net.mcreator.eldervale.procedures;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.server.level.ServerPlayer;
 
 import net.mcreator.eldervale.network.EldervaleModVariables;
+import net.mcreator.eldervale.gameplay.CombatDamage;
 import net.mcreator.eldervale.vfx.VfxIds;
 import net.mcreator.eldervale.vfx.VfxServer;
 import net.mcreator.eldervale.EldervaleMod;
 
-import java.util.Comparator;
-
-/** Berserker skill 1: BERSERK SLAM. Gameplay unchanged; the old particles are replaced by the VFX events. */
+/**
+ * Berserker skill 1: BERSERK SLAM.
+ * Damage is now ATTACK x SLAM_DAMAGE_MULT (2.0 x 2.5 base ATT = the old fixed 5), dealt with the caster as
+ * attacker through CombatDamage: XP on kill, critical hits and Party protection work, and only hostile
+ * living entities are hit (no items, villagers, pets or allies).
+ */
 public class Berserkeskill1Procedure {
+	private static final double SLAM_RADIUS = 3.5D;
+	private static final double SLAM_DAMAGE_MULT = 2.0D; // x ATTACK
+
 	public static void execute(LevelAccessor world, Entity entity) {
 		if (entity == null)
 			return;
@@ -32,16 +38,15 @@ public class Berserkeskill1Procedure {
 			if (entity instanceof ServerPlayer sp)
 				VfxServer.send(sp, VfxIds.BERSERKER_SLAM, VfxIds.START, 0, 3.5F);
 			EldervaleMod.queueServerWork(20, () -> {
-				{
-					final Vec3 _center = new Vec3((entity.getX()), (entity.getY()), (entity.getZ()));
-					for (Entity entityiterator : world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(7 / 2d), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList()) {
-						if (!(entityiterator == entity)) {
-							entityiterator.hurt(new DamageSource(world.holderOrThrow(DamageTypes.PLAYER_ATTACK)), 5);
-						}
-					}
+				if (!(entity instanceof ServerPlayer caster))
+					return;
+				final Vec3 center = new Vec3(caster.getX(), caster.getY(), caster.getZ());
+				if (caster.isAlive()) {
+					float damage = (float) (caster.getData(EldervaleModVariables.PLAYER_VARIABLES).ATTACK * SLAM_DAMAGE_MULT);
+					for (LivingEntity target : world.getEntitiesOfClass(LivingEntity.class, new AABB(center, center).inflate(SLAM_RADIUS), e -> CombatDamage.isSkillTarget(caster, e)))
+						CombatDamage.skillHit(caster, target, damage);
 				}
-				if (entity instanceof ServerPlayer sp)
-					VfxServer.sendAt(sp, VfxIds.BERSERKER_SLAM, VfxIds.IMPACT, 0, entity.getX(), entity.getY(), entity.getZ(), 3.5F);
+				VfxServer.sendAt(caster, VfxIds.BERSERKER_SLAM, VfxIds.IMPACT, 0, caster.getX(), caster.getY(), caster.getZ(), 3.5F);
 			});
 		}
 	}

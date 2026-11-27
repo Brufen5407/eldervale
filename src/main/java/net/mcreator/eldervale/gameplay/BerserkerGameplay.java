@@ -46,6 +46,9 @@ public class BerserkerGameplay {
 
 	// Prevents the splash hit from triggering another splash
 	private static boolean splashing = false;
+	/** True while the splash hit is applied (CriticalSystem skips it: no second critical roll). */
+    public static boolean isSplashing() {
+	return splashing;
 
 	// ---------------------------------------------------------------
 	//  Berserk Mode (passive): on below 50% health, off above

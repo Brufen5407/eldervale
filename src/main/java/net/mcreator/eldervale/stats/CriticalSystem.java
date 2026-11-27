@@ -8,17 +8,23 @@ import net.neoforged.bus.api.EventPriority;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.particles.ParticleTypes;
 
+import net.mcreator.eldervale.entity.MagicArrowEntity;
+import net.mcreator.eldervale.gameplay.BerserkerGameplay;
 import net.mcreator.eldervale.network.EldervaleModVariables;
 
 /**
- * Critical hits for player attacks (damage type PLAYER_ATTACK, includes skills that use it).
+ * Critical hits for player attacks: damage type PLAYER_ATTACK (melee and every skill that uses
+ * CombatDamage / playerAttack) and arrows shot by a player (vanilla ARROW type and MagicArrowEntity),
+ * so ranged classes benefit from Dexterity as well.
  * Runs at HIGH priority so Ambush (+25 %) and other NORMAL handlers see the critical amount.
+ * The Berserk Mode splash hit is skipped: it copies the already-critical damage of the main hit.
  * Skills with other damage types can call rollMultiplier() explicitly.
  *
  * Feedback (each part can be switched off in StatsConfig): particles, sound, floating "CRITICAL!" text.
@@ -28,15 +34,23 @@ public class CriticalSystem {
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onIncomingDamage(LivingIncomingDamageEvent event) {
-		if (!event.getSource().is(DamageTypes.PLAYER_ATTACK))
+		if (BerserkerGameplay.isSplashing())
 			return;
-		if (!(event.getSource().getEntity() instanceof ServerPlayer player) || event.getEntity() == player)
+		DamageSource source = event.getSource();
+		if (!isCriticalSource(source))
+			return;
+		if (!(source.getEntity() instanceof ServerPlayer player) || event.getEntity() == player)
 			return;
 		float multiplier = rollMultiplier(player);
 		if (multiplier <= 1.0F)
 			return;
 		event.setAmount(event.getAmount() * multiplier);
 		playFeedback(player, event.getEntity());
+	}
+
+	/** Melee / skill hits and arrows can critical; the attacker (getEntity) is checked by the caller. */
+	private static boolean isCriticalSource(DamageSource source) {
+		return source.is(DamageTypes.PLAYER_ATTACK) || source.is(DamageTypes.ARROW) || source.getDirectEntity() instanceof MagicArrowEntity;
 	}
 
 	/** Returns 1.0 when there is no critical, otherwise CRITICAL_DAMAGE / 100. Public API for skills. */

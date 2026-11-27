@@ -124,6 +124,7 @@ key_key.hotbar.9:key.keyboard.9
 key_key.curios.open.desc:key.keyboard.g
 key_key.eldervale.party:key.keyboard.o
 key_key.eldervale.attributes:key.keyboard.k
+key_key.eldervale.rpg_menu:key.keyboard.i
 key_key.eldervale.skill_1:key.keyboard.v
 key_key.eldervale.skill_2:key.keyboard.b
 soundCategory_master:1.0

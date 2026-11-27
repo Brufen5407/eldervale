@@ -18,6 +18,10 @@ import net.mcreator.eldervale.network.EldervaleModVariables;
 /**
  * Defence and Holy Shields. Replaces DefenceappliedProcedure.
  * Runs only on the server and only for players, so it is safe on a dedicated server.
+ *
+ * Order of the pipeline for damage received by a player:
+ *   MobScalingProcedure (HIGHEST, mob level multiplier) -> this handler (HIGH, DEF) -> vanilla armor.
+ * Damage that bypasses invulnerability (void, /kill) ignores shield, defence and the Berserk drawback.
  */
 @EventBusSubscriber
 public class DefenceHandler {
@@ -35,11 +39,14 @@ public class DefenceHandler {
 		if (!(event.getEntity() instanceof ServerPlayer player))
 			return;
 
+		// void, /kill: nothing reduces (or increases) this damage
+		if (event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+			return;
+
 		EldervaleModVariables.PlayerVariables v = player.getData(EldervaleModVariables.PLAYER_VARIABLES);
-		boolean bypass = event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY); // void, /kill
 
 		// ---- Holy Shields: no damage at all (no hit animation, no knockback) ----
-		if (v.paladin_shields && !bypass) {
+		if (v.paladin_shields) {
 			event.setCanceled(true);
 			if (SHIELD_EFFECTS)
 				shieldFx(player);
