@@ -1,14 +1,3 @@
-/estats show
-/summon minecraft:zoglin
-/summon minecraft:zombie
-/summon minecraft:husk
-/estats reset
-/summon minecraft:husk
-/summon minecraft:iron_golem
-/give Dev eldervale:classselector
-/summon minecraft:husk
-/summon minecraft:wolf
-/summon minecraft:skeleton
 /summon minecraft:husk
 /summon minecraft:huskù
 /summon minecraft:husk
@@ -48,3 +37,14 @@
 /time set day
 /summon minecraft:husk
 /give Dev eldervale:classselector
+/summon minecraft:husk
+/gamemode survival
+/summon minecraft:husk
+/gamemode creative
+/summon minecraft:husk
+/gamemode survival
+/summon minecraft:husk
+/give Dev apple
+/give Dev applet
+/give Dev apple 10
+/summon minecraft:husk
